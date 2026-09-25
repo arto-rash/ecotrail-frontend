@@ -11,16 +11,16 @@ export function LogoMark({ className }: { className?: string }) {
   );
 }
 
-export function Logo({ className, light = false }: { className?: string; light?: boolean }) {
+export function Logo({ href, className, light = false, tagline }: { href: string; className?: string; light?: boolean; tagline: string }) {
   return (
-    <Link href="/" className={cn("group inline-flex items-center gap-2.5", className)} aria-label="EcoTrail home">
+    <Link href={href} className={cn("group inline-flex items-center gap-2.5", className)} aria-label="EcoTrail">
       <LogoMark className={cn("size-8 transition-transform group-hover:-rotate-6", light ? "text-forest-700" : "text-forest-800")} />
       <span className="leading-none">
         <span className={cn("block font-display-tight text-[1.35rem] font-semibold", light ? "text-sand-50" : "text-forest-900")}>
           EcoTrail
         </span>
         <span className={cn("block text-[0.6rem] font-bold tracking-[0.22em] uppercase", light ? "text-sand-200/80" : "text-ink-500")}>
-          Azerbaijan
+          {tagline}
         </span>
       </span>
     </Link>

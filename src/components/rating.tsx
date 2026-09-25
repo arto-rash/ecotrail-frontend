@@ -1,4 +1,7 @@
+"use client";
+
 import { Star } from "lucide-react";
+import { useI18n } from "./i18n-provider";
 import { cn } from "@/lib/format";
 
 export function Rating({ value, count, className }: { value?: number | null; count?: number; className?: string }) {
@@ -13,8 +16,9 @@ export function Rating({ value, count, className }: { value?: number | null; cou
 }
 
 export function Stars({ value, className }: { value: number; className?: string }) {
+  const { dict } = useI18n();
   return (
-    <span className={cn("inline-flex", className)} aria-label={`${value} out of 5`}>
+    <span className={cn("inline-flex", className)} aria-label={`${value} ${dict.common.outOf5}`}>
       {[1, 2, 3, 4, 5].map((i) => (
         <Star key={i} className={cn("size-3.5", i <= value ? "fill-ochre-500 text-ochre-500" : "text-sand-300")} />
       ))}

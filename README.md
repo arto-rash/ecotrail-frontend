@@ -8,17 +8,32 @@ Next.js 16 (App Router) web app for EcoTrail, a hiking-trail guide to Azerbaijan
 - [MapLibre GL](https://maplibre.org/) with free [OpenFreeMap](https://openfreemap.org/) tiles (no API key)
 - Fonts: Fraunces (display) and Manrope (text) via `next/font`
 
+## Languages
+
+Every page lives under `/az/...` or `/en/...` (`src/app/[lang]`). `src/proxy.ts` sends bare URLs to the
+visitor's language (cookie → `Accept-Language` → Azerbaijani). UI strings are in
+`src/dictionaries/{az,en}.json`; server components use `getDictionary()`, client components `useI18n()`.
+
 ## Pages
 
 | Route | What it does |
 |---|---|
-| `/` | Hero search, featured trails, regions, map, eco-principles, guides |
-| `/trails` | Search and filter (region, difficulty, duration, features, sort), list + map split view; `?view=map` for map-only on mobile |
-| `/trails/[slug]` | Trail detail: gallery, stats, waypoints, best months, reviews, trailhead map, directions, nearby trails |
-| `/trails/new` | Three-step "share a trail" form with a click-to-place trailhead map and photo upload |
-| `/guides` | Partner guides and agencies, filterable by region |
-| `/challenges` | Eco-challenges and Leave No Trace principles |
-| `/credits` | Photo attributions (Wikimedia Commons) |
+| `/[lang]` | Hero search, mapped trails, clickable region map, places, map teaser, eco tips |
+| `/[lang]/trails` · `/[lang]/places` | Explore tabs: search, filters, region picker, card grid |
+| `/[lang]/trails/[slug]` | Route map, elevation profile, places along the way, reviews, sources |
+| `/[lang]/places/[slug]` | Photo, facts, Wikipedia excerpt, map, nearby trails and places, reviews |
+| `/[lang]/map` | Full-screen map: 14 economic regions (SVG) or terrain (MapLibre) with an in-view list |
+| `/[lang]/trails/new` | Share-a-trail form with a click-to-place trailhead |
+| `/[lang]/guides` | Verified partner guides and the partner application |
+| `/[lang]/challenges` · `/[lang]/sources` | Eco-challenges; data sources, method and photo credits |
+
+Any location line opens that point in Google Maps; right-click (or long-press) on the terrain map
+opens any spot.
+
+## Region map
+
+`src/data/az-regions.json` holds pre-projected SVG paths for the 14 economic regions (2021 decree),
+built from OCHA COD-AB district boundaries with `node scripts/build-region-map.mjs`.
 
 ## Development
 

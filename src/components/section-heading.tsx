@@ -21,9 +21,9 @@ export function SectionHeading({
         <h2 className="font-display-tight text-3xl font-semibold text-forest-900 sm:text-4xl">{title}</h2>
         {description && <p className="mt-3 text-ink-700">{description}</p>}
       </div>
-      {href && (
+      {href && cta && (
         <Link href={href} className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-bold text-forest-700 hover:text-forest-900">
-          {cta ?? "View all"}
+          {cta}
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
       )}

@@ -1,31 +1,53 @@
 export type Difficulty = "easy" | "moderate" | "hard" | "expert";
 export type RouteType = "loop" | "out_and_back" | "point_to_point";
+export type PlaceType = "waterfall" | "lake" | "peak" | "village" | "historic" | "park";
 
-export interface Region {
-  id: number;
-  name: string;
+export interface Ref {
   slug: string;
-  description: string | null;
+  name: string;
+}
+
+export interface Region extends Ref {
+  hiking_advised: boolean;
   trails_count?: number;
+  places_count?: number;
+}
+
+export interface Source {
+  label: string;
+  url: string;
+  license: string;
+}
+
+export interface Photo {
+  url: string;
+  author: string | null;
+  license: string | null;
+  source: string | null;
+  caption: string | null;
 }
 
 export interface Trail {
   id: number;
   slug: string;
+  source: "osm" | "community";
   name: string;
-  region?: Region;
+  summary: string | null;
+  district: Ref | null;
+  region: Ref | null;
   village: string | null;
-  summary: string;
   difficulty: Difficulty;
   route_type: RouteType;
   distance_km: number;
+  segments: number;
   duration_minutes: number;
-  elevation_gain_m: number | null;
-  max_altitude_m: number | null;
+  ascent_m: number | null;
+  max_ele_m: number | null;
+  stats_estimated: boolean;
   location: { lat: number; lng: number };
-  cover_image: string | null;
+  image: Photo | null;
   features: string[];
-  offline_map: boolean;
+  network: string | null;
   is_featured: boolean;
   rating?: number | null;
   reviews_count?: number;
@@ -36,35 +58,70 @@ export interface Review {
   author_name: string;
   rating: number;
   body: string;
-  hiked_on: string | null;
+  locale: string;
+  created_at: string;
 }
 
 export interface TrailDetail extends Trail {
-  description: string;
-  gallery: string[];
-  best_months: number[];
+  description: string | null;
+  difficulty_basis: "sac_scale" | "effort" | "submitter" | null;
+  sac_scale: string | null;
+  descent_m: number | null;
+  min_ele_m: number | null;
+  route: { type: "MultiLineString"; coordinates: [number, number][][] } | null;
+  elevation_profile: [number, number][];
   waypoints: string[];
+  gallery: string[];
+  sources: Source[];
+  osm_relation_id: number | null;
+  wikidata_id: string | null;
+  places: Place[];
+  reviews: Review[];
+}
+
+export interface Place {
+  id: number;
+  slug: string;
+  type: PlaceType;
+  name: string;
+  summary: string | null;
+  district: Ref | null;
+  region: Ref | null;
+  location: { lat: number; lng: number };
+  ele_m: number | null;
+  ele_source: "mapped" | "srtm" | null;
+  image: Photo | null;
+  is_featured: boolean;
+  rating?: number | null;
+  reviews_count?: number;
+}
+
+export interface PlaceDetail extends Place {
+  description: string | null;
+  sources: Source[];
+  osm_id: string | null;
+  wikidata_id: string | null;
+  trails: Trail[];
   reviews: Review[];
 }
 
 export interface Guide {
-  id: number;
   slug: string;
   name: string;
   kind: "guide" | "agency";
-  headline: string;
-  bio: string;
+  headline: string | null;
+  bio: string | null;
   languages: string[];
-  specialties: string[];
-  region?: Region;
-  rating: number;
-  trips_count: number;
-  price_from_azn: number | null;
+  regions: string[];
+  email: string | null;
+  phone: string | null;
+  website: string | null;
   is_verified: boolean;
 }
 
 export interface Stats {
   trails: number;
+  places: number;
   regions: number;
   total_km: number;
   reviews: number;
@@ -80,6 +137,7 @@ export interface Options {
   difficulties: Option[];
   route_types: Option[];
   features: Option[];
+  place_types: Option[];
 }
 
 export interface Paginated<T> {
@@ -87,8 +145,30 @@ export interface Paginated<T> {
   meta: { current_page: number; last_page: number; per_page: number; total: number };
 }
 
-/** A trail reduced to what the map needs. */
-export type MapTrail = Pick<Trail, "slug" | "name" | "difficulty" | "location" | "cover_image"> & {
-  region?: string;
-  distance_km?: number;
-};
+export interface TrailFeatureProps {
+  kind: "trail";
+  slug: string;
+  name: string;
+  difficulty: Difficulty;
+  distance_km: number;
+  duration_minutes: number;
+  region: string | null;
+  lat: number;
+  lng: number;
+  image: string | null;
+}
+
+export interface PlaceFeatureProps {
+  kind: "place";
+  slug: string;
+  name: string;
+  type: PlaceType;
+  ele_m: number | null;
+  region: string | null;
+  image: string | null;
+}
+
+export interface MapData {
+  trails: { type: "FeatureCollection"; features: { type: "Feature"; geometry: { type: "MultiLineString"; coordinates: [number, number][][] }; properties: TrailFeatureProps }[] };
+  places: { type: "FeatureCollection"; features: { type: "Feature"; geometry: { type: "Point"; coordinates: [number, number] }; properties: PlaceFeatureProps }[] };
+}

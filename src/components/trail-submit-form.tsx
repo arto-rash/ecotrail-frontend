@@ -4,22 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ImagePlus, LoaderCircle, MapPin, PartyPopper, Plus, X } from "lucide-react";
+import { useI18n } from "./i18n-provider";
 import { TrailMap } from "./trail-map";
+import { fill, localePath } from "@/i18n/config";
 import { api, ApiError } from "@/lib/api";
-import { DIFFICULTY, cn } from "@/lib/format";
-import type { Difficulty, Options, Region } from "@/lib/types";
-
-const STEPS = ["The basics", "Route & location", "Photos & you"] as const;
+import { DIFFICULTY_STYLE, cn } from "@/lib/format";
+import type { Difficulty, Options } from "@/lib/types";
 
 const STEP_FIELDS: Record<number, string[]> = {
-  0: ["name", "region_id", "village", "description", "difficulty", "route_type", "features"],
-  1: ["lat", "lng", "distance_km", "duration_minutes", "elevation_gain_m", "max_altitude_m", "waypoints"],
+  0: ["name", "village", "description", "difficulty", "route_type", "features"],
+  1: ["lat", "lng", "distance_km", "duration_minutes", "ascent_m", "max_ele_m", "waypoints"],
   2: ["photos", "submitter_name", "submitter_email"],
 };
 
 type Form = {
   name: string;
-  region_id: string;
   village: string;
   description: string;
   difficulty: Difficulty | "";
@@ -29,22 +28,25 @@ type Form = {
   distance_km: string;
   hours: string;
   minutes: string;
-  elevation_gain_m: string;
-  max_altitude_m: string;
+  ascent_m: string;
+  max_ele_m: string;
   waypoints: string[];
   submitter_name: string;
   submitter_email: string;
 };
 
 const EMPTY: Form = {
-  name: "", region_id: "", village: "", description: "", difficulty: "", route_type: "out_and_back", features: [],
-  location: null, distance_km: "", hours: "", minutes: "", elevation_gain_m: "", max_altitude_m: "", waypoints: [""],
+  name: "", village: "", description: "", difficulty: "", route_type: "out_and_back", features: [],
+  location: null, distance_km: "", hours: "", minutes: "", ascent_m: "", max_ele_m: "", waypoints: [""],
   submitter_name: "", submitter_email: "",
 };
 
 type Errors = Record<string, string>;
 
-export function TrailSubmitForm({ regions, options }: { regions: Region[]; options: Options }) {
+export function TrailSubmitForm({ options }: { options: Options }) {
+  const { locale, dict } = useI18n();
+  const t = dict.submit;
+  const STEPS = t.steps;
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<Form>(EMPTY);
   const [photos, setPhotos] = useState<{ file: File; url: string }[]>([]);
@@ -71,19 +73,18 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
   function validate(s: number): Errors {
     const e: Errors = {};
     if (s === 0) {
-      if (form.name.trim().length < 3) e.name = "Give the trail a name (at least 3 characters).";
-      if (!form.region_id) e.region_id = "Choose a region.";
-      if (form.description.trim().length < 30) e.description = "Describe the trail in at least 30 characters.";
-      if (!form.difficulty) e.difficulty = "Pick a difficulty level.";
+      if (form.name.trim().length < 3) e.name = t.errName;
+      if (form.description.trim().length < 30) e.description = t.errDescription;
+      if (!form.difficulty) e.difficulty = t.errDifficulty;
     }
     if (s === 1) {
-      if (!form.location) e.lat = "Click the map to mark the trailhead.";
-      if (!(Number(form.distance_km) > 0)) e.distance_km = "Enter the total distance.";
-      if (durationMinutes < 10) e.duration_minutes = "Enter how long the hike takes.";
+      if (!form.location) e.lat = t.errTrailhead;
+      if (!(Number(form.distance_km) > 0)) e.distance_km = t.errDistance;
+      if (durationMinutes < 10) e.duration_minutes = t.errTime;
     }
     if (s === 2) {
-      if (!form.submitter_name.trim()) e.submitter_name = "Tell us your name.";
-      if (!/^\S+@\S+\.\S+$/.test(form.submitter_email)) e.submitter_email = "Enter a valid email so we can notify you.";
+      if (!form.submitter_name.trim()) e.submitter_name = t.errYourName;
+      if (!/^\S+@\S+\.\S+$/.test(form.submitter_email)) e.submitter_email = t.errEmail;
     }
     return e;
   }
@@ -106,7 +107,6 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
 
     const fd = new FormData();
     fd.set("name", form.name.trim());
-    fd.set("region_id", form.region_id);
     if (form.village.trim()) fd.set("village", form.village.trim());
     fd.set("description", form.description.trim());
     fd.set("difficulty", form.difficulty);
@@ -116,8 +116,8 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
     fd.set("lng", String(form.location!.lng));
     fd.set("distance_km", form.distance_km);
     fd.set("duration_minutes", String(durationMinutes));
-    if (form.elevation_gain_m) fd.set("elevation_gain_m", form.elevation_gain_m);
-    if (form.max_altitude_m) fd.set("max_altitude_m", form.max_altitude_m);
+    if (form.ascent_m) fd.set("ascent_m", form.ascent_m);
+    if (form.max_ele_m) fd.set("max_ele_m", form.max_ele_m);
     form.waypoints.map((w) => w.trim()).filter(Boolean).forEach((w) => fd.append("waypoints[]", w));
     photos.forEach((p) => fd.append("photos[]", p.file));
     fd.set("submitter_name", form.submitter_name.trim());
@@ -125,7 +125,7 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
 
     setSubmitting(true);
     try {
-      await api("trails", { method: "POST", body: fd });
+      await api(`trails?lang=${locale}`, { method: "POST", body: fd });
       setDone(true);
       top.current?.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
@@ -137,9 +137,9 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
         const firstStep = [0, 1, 2].find((s) => STEP_FIELDS[s].some((f) => mapped[f]));
         if (firstStep !== undefined && firstStep !== step) go(firstStep);
       } else if (err instanceof ApiError && err.status === 429) {
-        setErrors({ form: "You've shared a lot of trails in a short time. Please try again in an hour." });
+        setErrors({ form: t.errTooMany });
       } else {
-        setErrors({ form: "Something went wrong sending your trail. Please try again." });
+        setErrors({ form: t.errGeneric });
       }
     } finally {
       setSubmitting(false);
@@ -152,19 +152,16 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
         <span className="mx-auto grid size-16 place-items-center rounded-full bg-forest-800 text-sand-50">
           <PartyPopper className="size-7" />
         </span>
-        <h2 className="font-display-tight mt-6 text-4xl font-semibold text-forest-900">You&apos;re amazing!</h2>
-        <p className="mx-auto mt-4 max-w-md text-ink-700">
-          Thanks for sharing your adventure with the community. Our team is reviewing <b>{form.name}</b> to make sure it&apos;s safe, accurate and ready for other hikers.
-          We&apos;ll email <b>{form.submitter_email}</b> as soon as it&apos;s published.
-        </p>
+        <h2 className="font-display-tight mt-6 text-4xl font-semibold text-forest-900">{t.doneTitle}</h2>
+        <p className="mx-auto mt-4 max-w-md text-ink-700">{fill(t.doneText, { name: form.name, email: form.submitter_email })}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link href="/trails" className="rounded-full bg-forest-800 px-5 py-3 text-sm font-bold text-sand-50 hover:bg-forest-900">Explore trails</Link>
+          <Link href={localePath(locale, "/trails")} className="rounded-full bg-forest-800 px-5 py-3 text-sm font-bold text-sand-50 hover:bg-forest-900">{t.exploreTrails}</Link>
           <button
             type="button"
             onClick={() => { setForm(EMPTY); setPhotos([]); setStep(0); setDone(false); }}
             className="rounded-full bg-white px-5 py-3 text-sm font-bold text-ink-900 ring-1 ring-sand-300"
           >
-            Share another
+            {t.shareAnother}
           </button>
         </div>
       </div>
@@ -196,27 +193,19 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
       <div className="rounded-[var(--radius-card)] bg-white p-5 shadow-[var(--shadow-card)] ring-1 ring-sand-200 sm:p-8">
         {step === 0 && (
           <div className="space-y-6">
-            <Field label="Trail name" error={errors.name} required>
-              <input className={input(errors.name)} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Qaranohur Lake" maxLength={120} />
+            <Field label={t.name} error={errors.name} required>
+              <input className={input(errors.name)} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder={t.namePlaceholder} maxLength={120} />
             </Field>
-            <div className="grid gap-6 sm:grid-cols-2">
-              <Field label="Region" error={errors.region_id} required>
-                <select className={input(errors.region_id)} value={form.region_id} onChange={(e) => set("region_id", e.target.value)}>
-                  <option value="">Choose a region</option>
-                  {regions.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
-                </select>
-              </Field>
-              <Field label="Nearest village" error={errors.village}>
-                <input className={input(errors.village)} value={form.village} onChange={(e) => set("village", e.target.value)} placeholder="e.g. Talistan" />
-              </Field>
-            </div>
-            <Field label="Description" error={errors.description} required hint="What makes it special? Terrain, water sources, tricky sections, where to park.">
+            <Field label={t.village} error={errors.village}>
+              <input className={input(errors.village)} value={form.village} onChange={(e) => set("village", e.target.value)} placeholder={t.villagePlaceholder} />
+            </Field>
+            <Field label={t.description} error={errors.description} required hint={t.descriptionHint}>
               <textarea className={cn(input(errors.description), "min-h-36 py-3")} value={form.description} onChange={(e) => set("description", e.target.value)} maxLength={5000} />
             </Field>
-            <Field label="Difficulty" error={errors.difficulty} required>
+            <Field label={t.difficulty} error={errors.difficulty} required>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {options.difficulties.map((d) => {
-                  const meta = DIFFICULTY[d.value as Difficulty];
+                  const color = DIFFICULTY_STYLE[d.value as Difficulty].color;
                   const on = form.difficulty === d.value;
                   return (
                     <button
@@ -226,14 +215,14 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
                       onClick={() => set("difficulty", d.value as Difficulty)}
                       className={cn("rounded-2xl p-3 text-left ring-1 transition", on ? "bg-forest-900 text-sand-50 ring-forest-900" : "bg-sand-50 ring-sand-200 hover:ring-sand-400")}
                     >
-                      <span className="flex items-center gap-2 font-bold"><span className="size-2.5 rounded-full" style={{ background: meta.color }} />{d.label}</span>
-                      <span className={cn("mt-1 block text-xs", on ? "text-sand-200" : "text-ink-500")}>{meta.blurb}</span>
+                      <span className="flex items-center gap-2 font-bold"><span className="size-2.5 rounded-full" style={{ background: color }} />{d.label}</span>
+                      <span className={cn("mt-1 block text-xs", on ? "text-sand-200" : "text-ink-500")}>{dict.difficultyBlurb[d.value as Difficulty]}</span>
                     </button>
                   );
                 })}
               </div>
             </Field>
-            <Field label="Route type">
+            <Field label={t.routeType}>
               <div className="inline-flex flex-wrap rounded-full bg-sand-100 p-1">
                 {options.route_types.map((r) => (
                   <button
@@ -248,7 +237,7 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
                 ))}
               </div>
             </Field>
-            <Field label="Features & highlights" hint="Select all that apply.">
+            <Field label={t.features} hint={t.featuresHint}>
               <div className="flex flex-wrap gap-2">
                 {options.features.map((f) => {
                   const on = form.features.includes(f.value);
@@ -271,9 +260,8 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
 
         {step === 1 && (
           <div className="space-y-6">
-            <Field label="Trailhead" error={errors.lat || errors.lng} required hint="Click the map where the hike starts. Drag the pin to adjust.">
+            <Field label={t.trailhead} error={errors.lat || errors.lng} required hint={t.trailheadHint}>
               <TrailMap
-                trails={[]}
                 pick={{ value: form.location, onChange: (v) => set("location", v) }}
                 className={cn("h-80 rounded-2xl ring-1", errors.lat ? "ring-pomegranate-500" : "ring-sand-200")}
               />
@@ -284,29 +272,29 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
               )}
             </Field>
             <div className="grid gap-6 sm:grid-cols-2">
-              <Field label="Distance (km)" error={errors.distance_km} required>
+              <Field label={t.distance} error={errors.distance_km} required>
                 <input className={input(errors.distance_km)} type="number" inputMode="decimal" min="0.1" step="0.1" value={form.distance_km} onChange={(e) => set("distance_km", e.target.value)} placeholder="7.5" />
               </Field>
-              <Field label="Time to complete" error={errors.duration_minutes} required>
+              <Field label={t.time} error={errors.duration_minutes} required>
                 <div className="flex gap-2">
                   <div className="relative flex-1">
-                    <input className={cn(input(errors.duration_minutes), "pr-8")} type="number" inputMode="numeric" min="0" value={form.hours} onChange={(e) => set("hours", e.target.value)} placeholder="3" aria-label="Hours" />
-                    <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-ink-500">h</span>
+                    <input className={cn(input(errors.duration_minutes), "pr-8")} type="number" inputMode="numeric" min="0" value={form.hours} onChange={(e) => set("hours", e.target.value)} placeholder="3" aria-label={t.hours} />
+                    <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-ink-500">{dict.common.h}</span>
                   </div>
                   <div className="relative flex-1">
-                    <input className={cn(input(errors.duration_minutes), "pr-10")} type="number" inputMode="numeric" min="0" max="59" value={form.minutes} onChange={(e) => set("minutes", e.target.value)} placeholder="30" aria-label="Minutes" />
-                    <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-ink-500">min</span>
+                    <input className={cn(input(errors.duration_minutes), "pr-10")} type="number" inputMode="numeric" min="0" max="59" value={form.minutes} onChange={(e) => set("minutes", e.target.value)} placeholder="30" aria-label={t.minutes} />
+                    <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-ink-500">{dict.common.min}</span>
                   </div>
                 </div>
               </Field>
-              <Field label="Elevation gain (m)" error={errors.elevation_gain_m}>
-                <input className={input(errors.elevation_gain_m)} type="number" inputMode="numeric" min="0" value={form.elevation_gain_m} onChange={(e) => set("elevation_gain_m", e.target.value)} placeholder="450" />
+              <Field label={t.ascent} error={errors.ascent_m}>
+                <input className={input(errors.ascent_m)} type="number" inputMode="numeric" min="0" value={form.ascent_m} onChange={(e) => set("ascent_m", e.target.value)} placeholder="450" />
               </Field>
-              <Field label="Highest point (m)" error={errors.max_altitude_m}>
-                <input className={input(errors.max_altitude_m)} type="number" inputMode="numeric" value={form.max_altitude_m} onChange={(e) => set("max_altitude_m", e.target.value)} placeholder="1350" />
+              <Field label={t.highest} error={errors.max_ele_m}>
+                <input className={input(errors.max_ele_m)} type="number" inputMode="numeric" value={form.max_ele_m} onChange={(e) => set("max_ele_m", e.target.value)} placeholder="1350" />
               </Field>
             </div>
-            <Field label="Key waypoints" error={errors.waypoints} hint="Landmarks hikers will pass, in order — springs, junctions, viewpoints.">
+            <Field label={t.waypoints} error={errors.waypoints} hint={t.waypointsHint}>
               <div className="space-y-2">
                 {form.waypoints.map((w, i) => (
                   <div key={i} className="flex gap-2">
@@ -315,11 +303,11 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
                       className={input()}
                       value={w}
                       onChange={(e) => set("waypoints", form.waypoints.map((x, j) => (j === i ? e.target.value : x)))}
-                      placeholder={i === 0 ? "e.g. Village trailhead" : "Next landmark"}
+                      placeholder={i === 0 ? t.waypointFirst : t.waypointNext}
                       maxLength={120}
                     />
                     {form.waypoints.length > 1 && (
-                      <button type="button" aria-label="Remove waypoint" onClick={() => set("waypoints", form.waypoints.filter((_, j) => j !== i))} className="grid size-11 shrink-0 place-items-center rounded-xl text-ink-500 hover:bg-sand-100">
+                      <button type="button" aria-label={t.removeWaypoint} onClick={() => set("waypoints", form.waypoints.filter((_, j) => j !== i))} className="grid size-11 shrink-0 place-items-center rounded-xl text-ink-500 hover:bg-sand-100">
                         <X className="size-4" />
                       </button>
                     )}
@@ -327,7 +315,7 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
                 ))}
                 {form.waypoints.length < 30 && (
                   <button type="button" onClick={() => set("waypoints", [...form.waypoints, ""])} className="inline-flex items-center gap-1.5 text-sm font-bold text-forest-700 hover:text-forest-900">
-                    <Plus className="size-4" /> Add waypoint
+                    <Plus className="size-4" /> {t.addWaypoint}
                   </button>
                 )}
               </div>
@@ -337,15 +325,15 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
 
         {step === 2 && (
           <div className="space-y-6">
-            <Field label="Photos" error={errors.photos} hint="Up to 10 images, 8 MB each. The first one becomes the cover.">
+            <Field label={t.photos} error={errors.photos} hint={t.photosHint}>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                 {photos.map((p, i) => (
                   <div key={p.url} className="group relative aspect-square overflow-hidden rounded-xl bg-sand-200">
                     <Image src={p.url} alt="" fill unoptimized className="object-cover" />
-                    {i === 0 && <span className="absolute top-1.5 left-1.5 rounded-full bg-forest-900/80 px-2 py-0.5 text-[0.65rem] font-bold text-white">Cover</span>}
+                    {i === 0 && <span className="absolute top-1.5 left-1.5 rounded-full bg-forest-900/80 px-2 py-0.5 text-[0.65rem] font-bold text-white">{t.cover}</span>}
                     <button
                       type="button"
-                      aria-label="Remove photo"
+                      aria-label={t.removePhoto}
                       onClick={() => setPhotos((ps) => ps.filter((x) => x.url !== p.url))}
                       className="absolute top-1.5 right-1.5 grid size-7 place-items-center rounded-full bg-black/55 text-white opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100"
                     >
@@ -356,7 +344,7 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
                 {photos.length < 10 && (
                   <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-sand-300 text-ink-500 transition hover:border-forest-600 hover:text-forest-700">
                     <ImagePlus className="size-6" />
-                    <span className="text-xs font-bold">Add photos</span>
+                    <span className="text-xs font-bold">{t.addPhotos}</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -373,10 +361,10 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
               </div>
             </Field>
             <div className="grid gap-6 sm:grid-cols-2">
-              <Field label="Your name" error={errors.submitter_name} required>
+              <Field label={t.yourName} error={errors.submitter_name} required>
                 <input className={input(errors.submitter_name)} value={form.submitter_name} onChange={(e) => set("submitter_name", e.target.value)} autoComplete="name" />
               </Field>
-              <Field label="Email" error={errors.submitter_email} required hint="Only used to tell you when your trail is live.">
+              <Field label={t.email} error={errors.submitter_email} required hint={t.emailHint}>
                 <input className={input(errors.submitter_email)} type="email" value={form.submitter_email} onChange={(e) => set("submitter_email", e.target.value)} autoComplete="email" />
               </Field>
             </div>
@@ -388,17 +376,17 @@ export function TrailSubmitForm({ regions, options }: { regions: Region[]; optio
         <div className="mt-8 flex items-center justify-between border-t border-sand-200 pt-6">
           {step > 0 ? (
             <button type="button" onClick={() => go(step - 1)} className="inline-flex items-center gap-1.5 rounded-full px-4 py-3 text-sm font-bold text-ink-700 hover:bg-sand-100">
-              <ArrowLeft className="size-4" /> Back
+              <ArrowLeft className="size-4" /> {dict.common.back}
             </button>
           ) : <span />}
           {step < STEPS.length - 1 ? (
             <button type="button" onClick={next} className="inline-flex items-center gap-1.5 rounded-full bg-forest-800 px-6 py-3 text-sm font-bold text-sand-50 hover:bg-forest-900">
-              Next <ArrowRight className="size-4" />
+              {dict.common.next} <ArrowRight className="size-4" />
             </button>
           ) : (
             <button type="button" onClick={submit} disabled={submitting} className="inline-flex items-center gap-2 rounded-full bg-pomegranate-600 px-6 py-3 text-sm font-bold text-white hover:bg-pomegranate-700 disabled:opacity-60">
               {submitting && <LoaderCircle className="size-4 animate-spin" />}
-              Submit for review
+              {t.submitButton}
             </button>
           )}
         </div>

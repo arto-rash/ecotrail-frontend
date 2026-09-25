@@ -1,0 +1,16 @@
+"use client";
+
+import { useI18n } from "@/components/i18n-provider";
+
+export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
+  const { dict } = useI18n();
+  const e = dict.errors;
+  return (
+    <div className="container-page flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
+      <p className="text-xs font-bold tracking-[0.2em] text-pomegranate-600 uppercase">{e.errorEyebrow}</p>
+      <h1 className="font-display-tight mt-3 text-4xl font-semibold text-forest-900">{e.errorTitle}</h1>
+      <p className="mt-3 max-w-md text-ink-700">{e.errorText}</p>
+      <button onClick={reset} className="mt-8 rounded-full bg-forest-800 px-6 py-3 font-bold text-sand-50 hover:bg-forest-900">{e.retry}</button>
+    </div>
+  );
+}

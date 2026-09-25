@@ -84,44 +84,6 @@ body {
   }
 }
 
-/* Map markers */
-.trail-marker {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.6rem 0.3rem 0.35rem;
-  border-radius: 999px;
-  background: var(--color-sand-50);
-  color: var(--color-ink-900);
-  font: 700 0.72rem/1 var(--font-sans);
-  white-space: nowrap;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12), 0 6px 16px -6px rgb(0 0 0 / 0.4);
-  cursor: pointer;
-  transition: transform 150ms ease, background-color 150ms ease, color 150ms ease;
-}
-.trail-marker .dot {
-  width: 0.7rem;
-  height: 0.7rem;
-  border-radius: 999px;
-  border: 2px solid white;
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.12);
-}
-.trail-marker.is-active,
-.trail-marker:hover {
-  background: var(--color-forest-900);
-  color: var(--color-sand-50);
-  transform: scale(1.08);
-  z-index: 2;
-}
-.labels-hidden .trail-marker:not(.is-active):not(:hover) span.label,
-.trail-marker.is-compact span.label {
-  display: none;
-}
-.labels-hidden .trail-marker:not(.is-active):not(:hover),
-.trail-marker.is-compact {
-  padding: 0.3rem;
-}
-
 .maplibregl-popup-content {
   border-radius: 1rem;
   padding: 0;

@@ -1,24 +1,26 @@
 import Link from "next/link";
 import { Logo } from "./logo";
 import { Topo } from "./topo";
+import { localePath, type Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries";
 
-export function SiteFooter() {
+export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const f = dict.footer;
+  const p = (path: string) => localePath(locale, path);
   return (
     <footer className="relative mt-24 overflow-hidden bg-forest-950 pb-24 text-sand-200 md:pb-0">
-      <Topo className="pointer-events-none absolute -right-40 -top-20 h-[140%] w-auto text-forest-800/60" />
+      <Topo className="pointer-events-none absolute -top-20 -right-40 h-[140%] w-auto text-forest-800/60" />
       <div className="container-page relative grid gap-10 py-14 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div className="max-w-xs space-y-4">
-          <Logo light />
-          <p className="text-sm leading-relaxed text-sand-300/80">
-            A community guide to the mountains, forests and coastlines of Azerbaijan. Walk softly and leave every trail better than you found it.
-          </p>
+          <Logo href={p("/")} light tagline={locale === "az" ? "Azərbaycan" : "Azerbaijan"} />
+          <p className="text-sm leading-relaxed text-sand-300/80">{f.about}</p>
         </div>
-        <FooterCol title="Explore" links={[["All trails", "/trails"], ["Trail map", "/trails?view=map"], ["Easy walks", "/trails?difficulty=easy"], ["Waterfalls", "/trails?feature=waterfall"]]} />
-        <FooterCol title="Community" links={[["Share a trail", "/trails/new"], ["Local guides", "/guides"], ["Eco-challenges", "/challenges"]]} />
-        <FooterCol title="About" links={[["Photo credits", "/credits"]]} />
+        <FooterCol title={f.explore} links={[[f.allTrails, p("/trails")], [f.allPlaces, p("/places")], [f.map, p("/map")], [f.waterfalls, p("/places?type=waterfall")]]} />
+        <FooterCol title={f.community} links={[[f.share, p("/trails/new")], [f.guides, p("/guides")], [f.challenges, p("/challenges")]]} />
+        <FooterCol title={f.aboutTitle} links={[[f.sources, p("/sources")]]} />
       </div>
       <div className="container-page relative border-t border-forest-800 py-6 text-xs text-sand-400">
-        © {new Date().getFullYear()} EcoTrail. Trail information is community-sourced — always check conditions before you go.
+        © {new Date().getFullYear()} EcoTrail · © OpenStreetMap contributors. {f.disclaimer}
       </div>
     </footer>
   );
@@ -31,9 +33,7 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
       <ul className="space-y-2 text-sm">
         {links.map(([label, href]) => (
           <li key={href}>
-            <Link href={href} className="text-sand-100 transition-colors hover:text-moss-200">
-              {label}
-            </Link>
+            <Link href={href} className="text-sand-100 transition-colors hover:text-moss-200">{label}</Link>
           </li>
         ))}
       </ul>
