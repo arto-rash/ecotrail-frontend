@@ -5,6 +5,7 @@ import { ArrowLeft, Clock, Download, ExternalLink, Gauge, Mountain, MountainSnow
 import { CoverImage, PhotoCredit } from "@/components/cover-image";
 import { DifficultyBadge } from "@/components/difficulty-badge";
 import { ElevationProfile } from "@/components/elevation-profile";
+import { GuideAvatar } from "@/components/guide-avatar";
 import { LocationLink } from "@/components/location-link";
 import { Reviews } from "@/components/reviews";
 import { ShareButton } from "@/components/share-button";
@@ -63,6 +64,8 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
   if (!trail) notFound();
 
   const t = dict.trail;
+  // Older cached API responses (before guide profiles) have no `guides`.
+  const trailGuides = trail.guides ?? [];
   const est = trail.stats_estimated ? ` ${dict.common.est}` : "";
   const { lat, lng } = trail.location;
   const place = [trail.village, trail.district?.name, trail.region?.name].filter(Boolean).join(", ");
@@ -225,10 +228,35 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
           <div className="rounded-[var(--radius-card)] bg-forest-900 p-5 text-sand-100">
             <p className="font-display-tight text-lg font-semibold text-sand-50">{dict.difficultyBlurb[trail.difficulty]}</p>
             <p className="mt-2 text-sm text-sand-200/85">{t.safety}</p>
-            <Link href={localePath(locale, "/guides")} className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-moss-200 hover:text-white">
-              <Users className="size-4" /> {t.withGuide}
-            </Link>
+            {trailGuides.length === 0 && (
+              <Link href={localePath(locale, `/guides${trail.region ? `?region=${trail.region.slug}` : ""}`)} className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-moss-200 hover:text-white">
+                <Users className="size-4" /> {t.withGuide}
+              </Link>
+            )}
           </div>
+
+          {trailGuides.length > 0 && (
+            <div className="rounded-[var(--radius-card)] bg-white p-5 ring-1 ring-sand-200">
+              <p className="font-display-tight text-lg font-semibold text-forest-900">{dict.guides.onTrail}</p>
+              <p className="text-sm text-ink-500">{dict.guides.onTrailHint}</p>
+              <ul className="mt-3 space-y-2">
+                {trailGuides.map((guide) => (
+                  <li key={guide.slug}>
+                    <Link href={localePath(locale, `/guides/${guide.slug}`)} className="flex items-center gap-3 rounded-2xl p-2 transition hover:bg-sand-100">
+                      <GuideAvatar name={guide.name} photo={guide.photo} className="size-11" textClassName="text-sm" />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate font-bold text-ink-900">{guide.name}</span>
+                        <span className="block text-xs text-ink-500">
+                          {guide.price_from_azn !== null ? `${dict.guides.from} ${guide.price_from_azn} ₼ ${guide.price_unit?.label ?? ""}` : guide.kind === "agency" ? dict.guides.agency : dict.guides.guide}
+                          {guide.is_sample ? ` · ${dict.guides.sample}` : ""}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </aside>
       </div>
 

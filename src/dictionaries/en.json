@@ -58,7 +58,25 @@
       "November",
       "December"
     ],
-    "clearRating": "Clear rating"
+    "clearRating": "Clear rating",
+    "monthsShort": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "hoursUnit": "hours",
+    "hourUnit": "hour",
+    "daysUnit": "days",
+    "dayUnit": "day"
   },
   "difficulty": {
     "easy": "Easy",
@@ -367,7 +385,45 @@
     "agency": "Tour agency",
     "guide": "Independent guide",
     "sample": "Sample listing",
-    "sampleNote": "These are sample listings showing what the partner directory will look like — they aren't real guides yet. Verified partners will appear here with contact details."
+    "sampleNote": "These are sample listings showing what the partner directory will look like — they aren't real guides yet. Verified partners will appear here with contact details.",
+    "viewProfile": "View profile",
+    "years": "{count} years guiding",
+    "yearsOne": "1 year guiding",
+    "toursCount": "{count} tours",
+    "toursCountOne": "1 tour",
+    "from": "from",
+    "anyLanguage": "Any language",
+    "allKinds": "Guides & agencies",
+    "noMatch": "No guides match these filters yet.",
+    "about": "About",
+    "specialties": "Specialties",
+    "certifications": "Certifications",
+    "languagesLabel": "Languages",
+    "worksIn": "Works in",
+    "experience": "Experience",
+    "tours": "Tours",
+    "noTours": "No tours listed yet — get in touch to plan a custom trip.",
+    "contactTitle": "Contact",
+    "showContact": "Show contact",
+    "contactHint": "Mention EcoTrail when you get in touch.",
+    "contactSampleNote": "This is a sample listing — these details are placeholders.",
+    "contactError": "Couldn't load the contact details. Please try again.",
+    "call": "Call",
+    "whatsappLabel": "WhatsApp",
+    "emailLabel": "Email",
+    "websiteLabel": "Website",
+    "instagramLabel": "Instagram",
+    "telegramLabel": "Telegram",
+    "allGuides": "All guides",
+    "onTrail": "Guides who lead this trail",
+    "onTrailHint": "Hike this route with a local who knows it.",
+    "experienceYears": "Years guiding",
+    "specialtiesLabel": "What you specialise in",
+    "certificationsLabel": "Certifications (one per line)",
+    "certificationsPlaceholder": "e.g. Wilderness First Aid, 2023",
+    "whatsapp": "WhatsApp (optional)",
+    "instagram": "Instagram (optional)",
+    "priceOnRequest": "Price on request"
   },
   "challenges": {
     "eyebrow": "Eco-challenges",
@@ -541,5 +597,14 @@
     "errorTitle": "We lost the signal",
     "errorText": "We couldn't load this page. Check your connection and try again.",
     "retry": "Try again"
+  },
+  "tours": {
+    "groupSize": "Up to {count} people",
+    "season": "Season",
+    "includes": "Included",
+    "meetingPoint": "Meeting point",
+    "trails": "Trails on this tour",
+    "details": "Details",
+    "hideDetails": "Hide details"
   }
 }

@@ -58,7 +58,25 @@
       "noyabr",
       "dekabr"
     ],
-    "clearRating": "Qiyməti sil"
+    "clearRating": "Qiyməti sil",
+    "monthsShort": [
+      "Yan",
+      "Fev",
+      "Mar",
+      "Apr",
+      "May",
+      "İyn",
+      "İyl",
+      "Avq",
+      "Sen",
+      "Okt",
+      "Noy",
+      "Dek"
+    ],
+    "hoursUnit": "saat",
+    "hourUnit": "saat",
+    "daysUnit": "gün",
+    "dayUnit": "gün"
   },
   "difficulty": {
     "easy": "Asan",
@@ -367,7 +385,45 @@
     "agency": "Tur agentliyi",
     "guide": "Müstəqil bələdçi",
     "sample": "Nümunə",
-    "sampleNote": "Bunlar tərəfdaş kataloqunun necə görünəcəyini göstərən nümunə elanlardır — hələ real bələdçilər deyil. Təsdiqlənmiş tərəfdaşlar əlaqə məlumatları ilə burada görünəcək."
+    "sampleNote": "Bunlar tərəfdaş kataloqunun necə görünəcəyini göstərən nümunə elanlardır — hələ real bələdçilər deyil. Təsdiqlənmiş tərəfdaşlar əlaqə məlumatları ilə burada görünəcək.",
+    "viewProfile": "Profilə bax",
+    "years": "{count} il təcrübə",
+    "yearsOne": "1 il təcrübə",
+    "toursCount": "{count} tur",
+    "toursCountOne": "1 tur",
+    "from": "başlayaraq",
+    "anyLanguage": "İstənilən dil",
+    "allKinds": "Bələdçilər və agentliklər",
+    "noMatch": "Bu filtrlərə uyğun bələdçi hələ yoxdur.",
+    "about": "Haqqında",
+    "specialties": "İxtisaslar",
+    "certifications": "Sertifikatlar",
+    "languagesLabel": "Dillər",
+    "worksIn": "Fəaliyyət regionları",
+    "experience": "Təcrübə",
+    "tours": "Turlar",
+    "noTours": "Hələ tur əlavə edilməyib — fərdi səfər üçün əlaqə saxlayın.",
+    "contactTitle": "Əlaqə",
+    "showContact": "Əlaqə məlumatını göstər",
+    "contactHint": "Əlaqə saxlayanda EcoTrail-dən gəldiyinizi qeyd edin.",
+    "contactSampleNote": "Bu nümunə elandır — məlumatlar şərtidir.",
+    "contactError": "Əlaqə məlumatlarını yükləmək mümkün olmadı. Yenidən cəhd edin.",
+    "call": "Zəng et",
+    "whatsappLabel": "WhatsApp",
+    "emailLabel": "E-poçt",
+    "websiteLabel": "Veb sayt",
+    "instagramLabel": "Instagram",
+    "telegramLabel": "Telegram",
+    "allGuides": "Bütün bələdçilər",
+    "onTrail": "Bu marşrutda bələdçilik edənlər",
+    "onTrailHint": "Bu yolu tanıyan yerli bələdçi ilə gedin.",
+    "experienceYears": "Bələdçilik təcrübəsi (il)",
+    "specialtiesLabel": "İxtisaslaşdığınız sahələr",
+    "certificationsLabel": "Sertifikatlar (hər sətirdə bir)",
+    "certificationsPlaceholder": "məs. İlk tibbi yardım, 2023",
+    "whatsapp": "WhatsApp (istəyə görə)",
+    "instagram": "Instagram (istəyə görə)",
+    "priceOnRequest": "Qiymət razılaşma ilə"
   },
   "challenges": {
     "eyebrow": "Eko-çağırışlar",
@@ -541,5 +597,14 @@
     "errorTitle": "Siqnal itdi",
     "errorText": "Bu səhifəni yükləmək mümkün olmadı. İnternet bağlantınızı yoxlayıb yenidən cəhd edin.",
     "retry": "Yenidən cəhd et"
+  },
+  "tours": {
+    "groupSize": "{count} nəfərədək",
+    "season": "Mövsüm",
+    "includes": "Daxildir",
+    "meetingPoint": "Görüş yeri",
+    "trails": "Turdakı marşrutlar",
+    "details": "Ətraflı",
+    "hideDetails": "Gizlət"
   }
 }

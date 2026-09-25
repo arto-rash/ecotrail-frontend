@@ -77,6 +77,7 @@ export interface TrailDetail extends Trail {
   wikidata_id: string | null;
   places: Place[];
   reviews: Review[];
+  guides: Guide[];
 }
 
 export interface Place {
@@ -105,18 +106,67 @@ export interface PlaceDetail extends Place {
   reviews: Review[];
 }
 
+export interface Labeled {
+  value: string;
+  label: string;
+}
+
+export type ContactChannel = "phone" | "whatsapp" | "email" | "website" | "instagram" | "telegram";
+
 export interface Guide {
   slug: string;
   name: string;
   kind: "guide" | "agency";
+  photo: string | null;
   headline: string | null;
-  bio: string | null;
-  languages: string[];
-  regions: string[];
-  email: string | null;
-  phone: string | null;
-  website: string | null;
+  experience_years: number | null;
+  specialties: Labeled[];
+  languages: { code: string; label: string }[];
+  regions: Ref[];
+  price_from_azn: number | null;
+  price_unit: Labeled | null;
+  tours_count?: number;
+  rating?: number | null;
+  reviews_count?: number;
+  contact_channels: ContactChannel[];
   is_verified: boolean;
+  is_sample: boolean;
+}
+
+export interface GuideTour {
+  slug: string;
+  title: string;
+  summary: string | null;
+  description: string | null;
+  duration_value: number;
+  duration_unit: "hours" | "days";
+  difficulty: Difficulty;
+  price_azn: number | null;
+  price_unit: Labeled | null;
+  group_size_max: number | null;
+  months: number[];
+  includes: string[];
+  meeting_point: string | null;
+  trails: Trail[];
+}
+
+export interface GuideDetail extends Guide {
+  bio: string | null;
+  certifications: { name: string; issuer: string | null; year: number | null }[];
+  tours: GuideTour[];
+  reviews: Review[];
+}
+
+export interface GuideContact {
+  phone: string | null;
+  whatsapp: string | null;
+  whatsapp_url: string | null;
+  email: string | null;
+  website: string | null;
+  instagram: string | null;
+  instagram_url: string | null;
+  telegram: string | null;
+  telegram_url: string | null;
   is_sample: boolean;
 }
 
@@ -139,6 +189,9 @@ export interface Options {
   route_types: Option[];
   features: Option[];
   place_types: Option[];
+  guide_specialties: Option[];
+  guide_languages: Option[];
+  price_units: Option[];
 }
 
 export interface Paginated<T> {

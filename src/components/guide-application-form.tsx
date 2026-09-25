@@ -5,16 +5,24 @@ import { Check, LoaderCircle } from "lucide-react";
 import { useI18n } from "./i18n-provider";
 import { api, ApiError } from "@/lib/api";
 import { cn } from "@/lib/format";
-import type { Region } from "@/lib/types";
+import type { Options, Region } from "@/lib/types";
 
-const EMPTY = { name: "", kind: "guide", email: "", phone: "", website: "", regions: [] as string[], languages: "", message: "", company: "" };
+// Same fields as a guide profile, so an application converts into a guide 1:1 in the admin panel.
+const EMPTY = {
+  name: "", kind: "guide", email: "", phone: "", whatsapp: "", website: "", instagram: "",
+  regions: [] as string[], languages: [] as string[], specialties: [] as string[],
+  experience_years: "", certifications: "", message: "", company: "",
+};
 
-export function GuideApplicationForm({ regions }: { regions: Region[] }) {
+export function GuideApplicationForm({ regions, options }: { regions: Region[]; options: Options }) {
   const { locale, dict } = useI18n();
   const g = dict.guides;
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+
+  const toggle = (key: "regions" | "languages" | "specialties", value: string) =>
+    setForm((f) => ({ ...f, [key]: f[key].includes(value) ? f[key].filter((x) => x !== value) : [...f[key], value] }));
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -26,8 +34,11 @@ export function GuideApplicationForm({ regions }: { regions: Region[] }) {
         body: JSON.stringify({
           ...form,
           phone: form.phone || null,
+          whatsapp: form.whatsapp || null,
           website: form.website || null,
-          languages: form.languages.split(",").map((l) => l.trim()).filter(Boolean),
+          instagram: form.instagram || null,
+          certifications: form.certifications || null,
+          experience_years: form.experience_years === "" ? null : Number(form.experience_years),
         }),
       });
       setStatus("done");
@@ -51,6 +62,26 @@ export function GuideApplicationForm({ regions }: { regions: Region[] }) {
 
   const input = (key: string) => cn("h-11 w-full rounded-xl bg-white px-3.5 text-sm ring-1 outline-none focus:ring-2 focus:ring-forest-600", errors[key] ? "ring-pomegranate-500" : "ring-sand-200");
   const err = (key: string) => errors[key] && <span className="mt-1 block text-xs font-semibold text-pomegranate-600">{errors[key]}</span>;
+  const chips = (key: "regions" | "languages" | "specialties", items: { value: string; label: string }[]) => (
+    <div className="flex flex-wrap gap-2">
+      {items.map(({ value, label }) => {
+        const on = form[key].includes(value);
+        return (
+          <button key={value} type="button" aria-pressed={on} onClick={() => toggle(key, value)}
+            className={cn("inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold ring-1 transition", on ? "bg-moss-100 text-forest-800 ring-forest-600" : "bg-white text-ink-700 ring-sand-200 hover:ring-sand-400")}>
+            {on && <Check className="size-3.5" />}{label}
+          </button>
+        );
+      })}
+    </div>
+  );
+  const text = (key: keyof typeof EMPTY, label: string, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
+    <label className="block">
+      <span className="mb-1.5 block text-sm font-bold">{label}</span>
+      <input className={input(key)} value={form[key] as string} onChange={(e) => setForm({ ...form, [key]: e.target.value })} {...props} />
+      {err(key)}
+    </label>
+  );
 
   return (
     <form onSubmit={submit} className="space-y-5">
@@ -65,27 +96,34 @@ export function GuideApplicationForm({ regions }: { regions: Region[] }) {
         </div>
       </fieldset>
       <div className="grid gap-5 sm:grid-cols-2">
-        <label className="block"><span className="mb-1.5 block text-sm font-bold">{g.name}</span><input required className={input("name")} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />{err("name")}</label>
-        <label className="block"><span className="mb-1.5 block text-sm font-bold">{g.email}</span><input required type="email" className={input("email")} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />{err("email")}</label>
-        <label className="block"><span className="mb-1.5 block text-sm font-bold">{g.phone}</span><input type="tel" className={input("phone")} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />{err("phone")}</label>
-        <label className="block"><span className="mb-1.5 block text-sm font-bold">{g.website}</span><input type="url" placeholder="https://" className={input("website")} value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} />{err("website")}</label>
+        {text("name", g.name, { required: true })}
+        {text("email", g.email, { required: true, type: "email" })}
+        {text("phone", g.phone, { type: "tel" })}
+        {text("whatsapp", g.whatsapp, { type: "tel" })}
+        {text("website", g.website, { type: "url", placeholder: "https://" })}
+        {text("instagram", g.instagram, { placeholder: "@" })}
+        {text("experience_years", g.experienceYears, { type: "number", min: 0, max: 70, inputMode: "numeric" })}
       </div>
       <fieldset>
         <legend className="mb-2 text-sm font-bold">{g.regions}</legend>
-        <div className="flex flex-wrap gap-2">
-          {regions.filter((r) => r.hiking_advised).map((r) => {
-            const on = form.regions.includes(r.slug);
-            return (
-              <button key={r.slug} type="button" aria-pressed={on} onClick={() => setForm({ ...form, regions: on ? form.regions.filter((x) => x !== r.slug) : [...form.regions, r.slug] })}
-                className={cn("inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold ring-1 transition", on ? "bg-moss-100 text-forest-800 ring-forest-600" : "bg-white text-ink-700 ring-sand-200 hover:ring-sand-400")}>
-                {on && <Check className="size-3.5" />}{r.name}
-              </button>
-            );
-          })}
-        </div>
+        {chips("regions", regions.filter((r) => r.hiking_advised).map((r) => ({ value: r.slug, label: r.name })))}
         {err("regions")}
       </fieldset>
-      <label className="block"><span className="mb-1.5 block text-sm font-bold">{g.languages}</span><input className={input("languages")} placeholder={g.languagesPlaceholder} value={form.languages} onChange={(e) => setForm({ ...form, languages: e.target.value })} />{err("languages")}</label>
+      <fieldset>
+        <legend className="mb-2 text-sm font-bold">{g.languages}</legend>
+        {chips("languages", options.guide_languages)}
+        {err("languages")}
+      </fieldset>
+      <fieldset>
+        <legend className="mb-2 text-sm font-bold">{g.specialtiesLabel}</legend>
+        {chips("specialties", options.guide_specialties)}
+        {err("specialties")}
+      </fieldset>
+      <label className="block">
+        <span className="mb-1.5 block text-sm font-bold">{g.certificationsLabel}</span>
+        <textarea className={cn(input("certifications"), "h-auto min-h-20 py-3")} placeholder={g.certificationsPlaceholder} value={form.certifications} onChange={(e) => setForm({ ...form, certifications: e.target.value })} />
+        {err("certifications")}
+      </label>
       <label className="block">
         <span className="mb-1.5 block text-sm font-bold">{g.message}</span>
         <textarea required minLength={20} className={cn(input("message"), "h-auto min-h-32 py-3")} placeholder={g.messageHint} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />

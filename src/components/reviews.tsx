@@ -14,7 +14,7 @@ export function Reviews({
   initial,
   rating,
 }: {
-  kind: "trails" | "places";
+  kind: "trails" | "places" | "guides";
   slug: string;
   initial: Review[];
   rating?: number | null;

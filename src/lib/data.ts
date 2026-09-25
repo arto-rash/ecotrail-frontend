@@ -1,7 +1,7 @@
 import "server-only";
 import { api, ApiError } from "./api";
 import { getLocale } from "@/i18n/dictionaries";
-import type { Guide, MapData, Options, Paginated, Place, PlaceDetail, Region, Stats, Trail, TrailDetail } from "./types";
+import type { Guide, GuideDetail, MapData, Options, Paginated, Place, PlaceDetail, Region, Stats, Trail, TrailDetail } from "./types";
 
 const CACHE = { next: { revalidate: 300 } };
 
@@ -79,8 +79,12 @@ export async function getRegions() {
   return (await api<{ data: Region[] }>(await url("regions"), CACHE)).data;
 }
 
-export async function getGuides() {
-  return (await api<{ data: Guide[] }>(await url("guides"), CACHE)).data;
+export async function getGuides(query: { region?: string; language?: string; kind?: string; specialty?: string } = {}) {
+  return (await api<{ data: Guide[] }>(await url("guides", query), CACHE)).data;
+}
+
+export async function getGuide(slug: string) {
+  return orNull(api<{ data: GuideDetail }>(await url(`guides/${encodeURIComponent(slug)}`), CACHE).then((r) => r.data));
 }
 
 export async function getStats() {
