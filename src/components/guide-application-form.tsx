@@ -7,6 +7,7 @@ import { api, ApiError } from "@/lib/api";
 import { cn } from "@/lib/format";
 import type { Options, Region } from "@/lib/types";
 
+// Options may come from a cache older than guide profiles, hence the `?? []` below.
 // Same fields as a guide profile, so an application converts into a guide 1:1 in the admin panel.
 const EMPTY = {
   name: "", kind: "guide", email: "", phone: "", whatsapp: "", website: "", instagram: "",
@@ -111,12 +112,12 @@ export function GuideApplicationForm({ regions, options }: { regions: Region[]; 
       </fieldset>
       <fieldset>
         <legend className="mb-2 text-sm font-bold">{g.languages}</legend>
-        {chips("languages", options.guide_languages)}
+        {chips("languages", options.guide_languages ?? [])}
         {err("languages")}
       </fieldset>
       <fieldset>
         <legend className="mb-2 text-sm font-bold">{g.specialtiesLabel}</legend>
-        {chips("specialties", options.guide_specialties)}
+        {chips("specialties", options.guide_specialties ?? [])}
         {err("specialties")}
       </fieldset>
       <label className="block">
