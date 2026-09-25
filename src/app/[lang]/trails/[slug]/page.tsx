@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, ExternalLink, Gauge, Mountain, MountainSnow, Navigation, Route, Signpost, Users } from "lucide-react";
+import { ArrowLeft, Clock, Download, ExternalLink, Gauge, Mountain, MountainSnow, Navigation, Route, Signpost, Users } from "lucide-react";
 import { CoverImage, PhotoCredit } from "@/components/cover-image";
 import { DifficultyBadge } from "@/components/difficulty-badge";
 import { ElevationProfile } from "@/components/elevation-profile";
@@ -13,6 +13,7 @@ import { TrailCard } from "@/components/trail-card";
 import { TrailMap } from "@/components/trail-map";
 import { fill, localePath } from "@/i18n/config";
 import { getDictionary, getLocale } from "@/i18n/dictionaries";
+import { PUBLIC_API_URL } from "@/lib/api";
 import { getNearbyTrails, getTrail, safe } from "@/lib/data";
 import { formatDistance, formatDuration, formatMetres } from "@/lib/format";
 import { googleDirectionsUrl, googleMapsUrl, osmUrl } from "@/lib/maps";
@@ -199,11 +200,16 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
           <div className="overflow-hidden rounded-[var(--radius-card)] bg-white shadow-[var(--shadow-card)] ring-1 ring-sand-200">
             <TrailMap data={mapDataFor(trail)} className="h-72" />
             <div className="space-y-3 p-5">
-              <p className="text-xs font-bold tracking-[0.14em] text-ink-500 uppercase">{t.trailhead}</p>
+              <p className="text-xs font-bold tracking-[0.14em] text-ink-500 uppercase" title={t.startEndNote}>{t.trailhead}</p>
               <p className="font-mono text-sm text-ink-700">{lat.toFixed(5)}, {lng.toFixed(5)}</p>
               <a href={googleDirectionsUrl(lat, lng)} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 rounded-full bg-forest-800 px-4 py-3 text-sm font-bold text-sand-50 transition hover:bg-forest-900">
-                <Navigation className="size-4" /> {dict.common.directions}
+                <Navigation className="size-4" /> {t.directionsToStart}
               </a>
+              {trail.route && (
+                <a href={`${PUBLIC_API_URL}/trails/${encodeURIComponent(trail.slug)}/gpx`} download className="flex w-full items-center justify-center gap-2 rounded-full bg-moss-100 px-4 py-3 text-sm font-bold text-forest-800 transition hover:bg-moss-200">
+                  <Download className="size-4" /> {t.downloadGpx}
+                </a>
+              )}
               <div className="grid grid-cols-2 gap-2">
                 <a href={googleMapsUrl(lat, lng)} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 rounded-full bg-sand-100 px-3 py-2.5 text-xs font-bold text-ink-900 transition hover:bg-sand-200">
                   <ExternalLink className="size-3.5" /> Google Maps
@@ -212,6 +218,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
                   <ExternalLink className="size-3.5" /> OpenStreetMap
                 </a>
               </div>
+              {trail.route && <p className="text-xs leading-relaxed text-ink-500">{t.gpxHint}</p>}
             </div>
           </div>
 

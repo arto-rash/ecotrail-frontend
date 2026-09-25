@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { LoaderCircle, Star } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { useI18n } from "./i18n-provider";
-import { Rating, Stars } from "./rating";
+import { Rating, StarRatingInput, Stars } from "./rating";
 import { api, ApiError } from "@/lib/api";
 import { cn } from "@/lib/format";
 import type { Review } from "@/lib/types";
@@ -101,13 +101,7 @@ export function Reviews({
           </label>
           <fieldset>
             <legend className="mb-1.5 text-sm font-bold">{r.rating}</legend>
-            <div className="flex h-11 items-center gap-0.5">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button key={n} type="button" aria-label={`${n}`} aria-pressed={form.rating === n} onClick={() => setForm({ ...form, rating: n })} className="p-1">
-                  <Star className={cn("size-6 transition", n <= form.rating ? "fill-ochre-500 text-ochre-500" : "text-sand-400 hover:text-ochre-500")} />
-                </button>
-              ))}
-            </div>
+            <StarRatingInput value={form.rating} onChange={(rating) => setForm({ ...form, rating })} label={r.rating} />
             {errors.rating && <span className="mt-1 block text-xs font-semibold text-pomegranate-600">{errors.rating}</span>}
           </fieldset>
         </div>

@@ -117,6 +117,7 @@ export interface Guide {
   phone: string | null;
   website: string | null;
   is_verified: boolean;
+  is_sample: boolean;
 }
 
 export interface Stats {

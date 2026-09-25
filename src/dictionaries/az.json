@@ -57,7 +57,8 @@
       "oktyabr",
       "noyabr",
       "dekabr"
-    ]
+    ],
+    "clearRating": "Qiyməti sil"
   },
   "difficulty": {
     "easy": "Asan",
@@ -249,7 +250,11 @@
     "nearby": "Yaxınlıqdakı digər marşrutlar",
     "multiDay": "Çoxgünlük",
     "partOfTct": "Transqafqaz cığırının bir hissəsi",
-    "photoFrom": "{place} fotosu"
+    "photoFrom": "{place} fotosu",
+    "directionsToStart": "Başlanğıc nöqtəsinə yol tarifi",
+    "downloadGpx": "GPX faylını yüklə",
+    "gpxHint": "Google Maps linki yalnız bir nöqtəni göstərə bilər, marşrut xəttini çəkə bilməz. Xətti Google Maps-də görmək üçün bu GPX faylını Google My Maps-ə idxal edin; oflayn izləmək üçün Organic Maps, OsmAnd və ya Wikiloc-da açın.",
+    "startEndNote": "Başlanğıc nöqtəsi xəritələşdirilmiş marşrutun başladığı yerdir."
   },
   "place": {
     "allPlaces": "Bütün məkanlar",
@@ -270,7 +275,7 @@
     "empty": "Hələ rəy yoxdur — təəssüratını ilk sən paylaş.",
     "write": "Rəy yaz",
     "name": "Adınız",
-    "rating": "Qiymət",
+    "rating": "Ulduzla qiymətləndirin",
     "body": "Rəyiniz",
     "bodyHint": "Yolun vəziyyəti, nə qədər vaxt apardı, başqalarına tövsiyələr.",
     "submit": "Rəyi paylaş",
@@ -360,7 +365,9 @@
     "error": "Müraciəti göndərmək mümkün olmadı. Sahələri yoxlayıb yenidən cəhd edin.",
     "verified": "Təsdiqlənib",
     "agency": "Tur agentliyi",
-    "guide": "Müstəqil bələdçi"
+    "guide": "Müstəqil bələdçi",
+    "sample": "Nümunə",
+    "sampleNote": "Bunlar tərəfdaş kataloqunun necə görünəcəyini göstərən nümunə elanlardır — hələ real bələdçilər deyil. Təsdiqlənmiş tərəfdaşlar əlaqə məlumatları ilə burada görünəcək."
   },
   "challenges": {
     "eyebrow": "Eko-çağırışlar",

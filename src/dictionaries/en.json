@@ -57,7 +57,8 @@
       "October",
       "November",
       "December"
-    ]
+    ],
+    "clearRating": "Clear rating"
   },
   "difficulty": {
     "easy": "Easy",
@@ -249,7 +250,11 @@
     "nearby": "More trails nearby",
     "multiDay": "Multi-day",
     "partOfTct": "Part of the Transcaucasian Trail",
-    "photoFrom": "Photo of {place}"
+    "photoFrom": "Photo of {place}",
+    "directionsToStart": "Directions to the start",
+    "downloadGpx": "Download GPX",
+    "gpxHint": "A Google Maps link can only point to a place, not draw a trail. To see the route line in Google Maps, import this GPX into Google My Maps; to follow it offline, open it in Organic Maps, OsmAnd or Wikiloc.",
+    "startEndNote": "The trailhead is where the mapped route begins."
   },
   "place": {
     "allPlaces": "All places",
@@ -270,7 +275,7 @@
     "empty": "No reviews yet — be the first to share how it went.",
     "write": "Write a review",
     "name": "Your name",
-    "rating": "Rating",
+    "rating": "Your rating",
     "body": "Your review",
     "bodyHint": "Conditions, how long it took, tips for others.",
     "submit": "Post review",
@@ -360,7 +365,9 @@
     "error": "Couldn't send your application. Please check the fields and try again.",
     "verified": "Verified",
     "agency": "Tour agency",
-    "guide": "Independent guide"
+    "guide": "Independent guide",
+    "sample": "Sample listing",
+    "sampleNote": "These are sample listings showing what the partner directory will look like — they aren't real guides yet. Verified partners will appear here with contact details."
   },
   "challenges": {
     "eyebrow": "Eco-challenges",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BadgeCheck, Globe, Languages, Mail, Phone } from "lucide-react";
+import { BadgeCheck, Globe, Info, Languages, Mail, Phone } from "lucide-react";
 import { GuideApplicationForm } from "@/components/guide-application-form";
 import { Monogram } from "@/components/monogram";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -21,15 +21,21 @@ export default async function GuidesPage() {
       <h1 className="font-display-tight mt-2 text-4xl font-semibold text-forest-900 sm:text-5xl">{g.title}</h1>
       <p className="mt-3 max-w-2xl text-ink-700">{g.intro}</p>
 
+      {guides?.some((guide) => guide.is_sample) && (
+        <p className="mt-6 flex items-start gap-2 rounded-2xl bg-ochre-100 px-4 py-3 text-sm font-semibold text-[#7a5410]">
+          <Info className="mt-0.5 size-4 shrink-0" /> {g.sampleNote}
+        </p>
+      )}
       {guides && guides.length > 0 ? (
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {guides.map((guide) => (
-            <article key={guide.slug} className="flex flex-col rounded-[var(--radius-card)] bg-white p-6 shadow-[var(--shadow-card)] ring-1 ring-sand-200 sm:p-7">
+            <article key={guide.slug} className={`flex flex-col rounded-[var(--radius-card)] bg-white p-6 ring-1 sm:p-7 ${guide.is_sample ? "ring-sand-300 border border-dashed border-sand-300" : "shadow-[var(--shadow-card)] ring-sand-200"}`}>
               <div className="flex items-start gap-4">
                 <Monogram name={guide.name} className="size-16 text-xl" />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <h2 className="font-display-tight text-2xl font-semibold text-ink-900">{guide.name}</h2>
+                    {guide.is_sample && <span className="rounded-full bg-ochre-100 px-2 py-0.5 text-xs font-bold text-[#7a5410]">{g.sample}</span>}
                     {guide.is_verified && <span className="inline-flex items-center gap-1 rounded-full bg-moss-100 px-2 py-0.5 text-xs font-bold text-forest-700"><BadgeCheck className="size-3.5" /> {g.verified}</span>}
                   </div>
                   <p className="mt-1 text-sm text-ink-500">{guide.kind === "agency" ? g.agency : g.guide}{guide.regions.length ? ` · ${guide.regions.map((r) => regionName[r] ?? r).join(", ")}` : ""}</p>
