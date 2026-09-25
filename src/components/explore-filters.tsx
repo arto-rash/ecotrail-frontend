@@ -5,7 +5,7 @@ import { useEffect, useState, useTransition } from "react";
 import { Map as MapIcon, Search, SlidersHorizontal, X } from "lucide-react";
 import { useI18n } from "./i18n-provider";
 import { RegionMap } from "./region-map";
-import { Select } from "./select";
+import { Dropdown } from "./dropdown";
 import { fill } from "@/i18n/config";
 import { DIFFICULTIES, DIFFICULTY_STYLE, DURATIONS, FEATURES, PLACE_TYPES, cn } from "@/lib/format";
 import type { Region } from "@/lib/types";
@@ -81,31 +81,36 @@ export function ExploreFilters({ mode, regions, total }: { mode: Mode; regions: 
           <SlidersHorizontal className="size-4" />
           {e.filters}{activeCount ? ` · ${activeCount}` : ""}
         </button>
-        <Select
+        <Dropdown
+          label={e.sort}
           value={params.get("sort") ?? ""}
-          onChange={(ev) => set("sort", ev.target.value)}
-          aria-label={e.sort}
-          className="h-11 rounded-full bg-white pl-4 text-sm font-bold shadow-sm ring-1 ring-sand-200 outline-none"
-        >
-          {sorts.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-        </Select>
+          onChange={(v) => set("sort", v)}
+          options={sorts.map(([value, label]) => ({ value, label }))}
+          className="h-11 rounded-full bg-white px-4 text-sm font-bold shadow-sm ring-1 ring-sand-200"
+        />
       </div>
 
       <div className={cn("mt-3 flex-col gap-3 lg:flex", open ? "flex" : "hidden")}>
         <div className="flex flex-wrap items-center gap-2">
-          <Select value={params.get("region") ?? ""} onChange={(ev) => set("region", ev.target.value)} aria-label={e.pickRegion} className={chip(!!params.get("region"))}>
-            <option value="">{e.allRegions}</option>
-            {regions.filter((r) => r.hiking_advised).map((r) => <option key={r.slug} value={r.slug}>{r.name}</option>)}
-          </Select>
+          <Dropdown
+            label={e.pickRegion}
+            value={params.get("region") ?? ""}
+            onChange={(v) => set("region", v)}
+            options={[{ value: "", label: e.allRegions }, ...regions.filter((r) => r.hiking_advised).map((r) => ({ value: r.slug, label: r.name }))]}
+            className={chip(!!params.get("region"))}
+          />
           <button type="button" onClick={() => setShowMap((s) => !s)} aria-expanded={showMap} className={chip(showMap)}>
             <MapIcon className="size-3.5" /> {showMap ? e.hideRegionMap : e.showRegionMap}
           </button>
           {mode === "trails" && (
             <>
-              <Select value={params.get("max_duration") ?? ""} onChange={(ev) => set("max_duration", ev.target.value)} aria-label={dict.home.searchDuration} className={chip(!!params.get("max_duration"))}>
-                <option value="">{e.anyDuration}</option>
-                {DURATIONS.map((d) => <option key={d} value={d}>{dict.duration[d]}</option>)}
-              </Select>
+              <Dropdown
+                label={dict.home.searchDuration}
+                value={params.get("max_duration") ?? ""}
+                onChange={(v) => set("max_duration", v)}
+                options={[{ value: "", label: e.anyDuration }, ...DURATIONS.map((d) => ({ value: d, label: dict.duration[d] }))]}
+                className={chip(!!params.get("max_duration"))}
+              />
               <span className="mx-1 hidden h-6 w-px bg-sand-300 sm:block" />
               {DIFFICULTIES.map((d) => (
                 <button key={d} type="button" onClick={() => toggle("difficulty", d)} aria-pressed={multi("difficulty").includes(d)} className={chip(multi("difficulty").includes(d))}>
