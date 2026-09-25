@@ -4,10 +4,12 @@ const API_URL = (
 
 // Server-side calls inside Docker must reach the API by its service name,
 // not the browser-facing URL. Falls back to the public URL elsewhere.
-const INTERNAL_API_URL = (process.env.API_INTERNAL_URL ?? API_URL).replace(
+const INTERNAL_API_URL = (process.env.API_INTERNAL_URL || API_URL).replace(
   /\/$/,
   "",
 );
+
+export const PUBLIC_API_URL = API_URL;
 
 export class ApiError extends Error {
   constructor(
@@ -18,13 +20,16 @@ export class ApiError extends Error {
   }
 }
 
-export async function api<T>(path: string, init?: RequestInit): Promise<T> {
+type ApiInit = RequestInit & { next?: { revalidate?: number | false; tags?: string[] } };
+
+export async function api<T>(path: string, init?: ApiInit): Promise<T> {
   const base = typeof window === "undefined" ? INTERNAL_API_URL : API_URL;
+  const isForm = init?.body instanceof FormData;
   const res = await fetch(`${base}/${path.replace(/^\//, "")}`, {
     ...init,
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      ...(isForm ? {} : { "Content-Type": "application/json" }),
       ...init?.headers,
     },
   });
@@ -35,4 +40,11 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
 
   if (!res.ok) throw new ApiError(res.status, body);
   return body as T;
+}
+
+/** Resolve an image path from the API: bundled images live in /public, uploads on the API host. */
+export function imageUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  if (path.startsWith("/storage/")) return new URL(API_URL).origin + path;
+  return path;
 }

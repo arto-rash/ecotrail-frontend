@@ -1,26 +1,141 @@
 @import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@theme {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --color-forest-950: #0e2217;
+  --color-forest-900: #14301f;
+  --color-forest-800: #1d3f2a;
+  --color-forest-700: #285237;
+  --color-forest-600: #356a47;
+  --color-forest-500: #4a855c;
+  --color-moss-400: #8fae7c;
+  --color-moss-200: #cddcbf;
+  --color-moss-100: #e5eddc;
+
+  --color-sand-50: #fbf8f2;
+  --color-sand-100: #f5efe3;
+  --color-sand-200: #ebe2d0;
+  --color-sand-300: #dccfb6;
+  --color-sand-400: #c4b393;
+
+  --color-ink-900: #1a1d19;
+  --color-ink-700: #3c423a;
+  --color-ink-500: #676e63;
+  --color-ink-400: #8a9086;
+
+  --color-pomegranate-700: #93331f;
+  --color-pomegranate-600: #b4432a;
+  --color-pomegranate-500: #cc5a3c;
+  --color-pomegranate-100: #f7e1d8;
+
+  --color-ochre-500: #c9912a;
+  --color-ochre-100: #f6ead0;
+
+  --color-plum-700: #43334f;
+  --color-plum-100: #e7e1ec;
+
+  --radius-card: 1.25rem;
+  --shadow-card: 0 1px 2px rgb(26 29 25 / 0.04), 0 8px 24px -12px rgb(26 29 25 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(26 29 25 / 0.06), 0 22px 44px -18px rgb(26 29 25 / 0.35);
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-sand-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-moss-200);
+  color: var(--color-forest-900);
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility font-display-tight {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 50, "WONK" 0;
+  letter-spacing: -0.02em;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Map markers */
+.trail-marker {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.35rem;
+  border-radius: 999px;
+  background: var(--color-sand-50);
+  color: var(--color-ink-900);
+  font: 700 0.72rem/1 var(--font-sans);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12), 0 6px 16px -6px rgb(0 0 0 / 0.4);
+  cursor: pointer;
+  transition: transform 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+.trail-marker .dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+.trail-marker.is-active,
+.trail-marker:hover {
+  background: var(--color-forest-900);
+  color: var(--color-sand-50);
+  transform: scale(1.08);
+  z-index: 2;
+}
+.labels-hidden .trail-marker:not(.is-active):not(:hover) span.label,
+.trail-marker.is-compact span.label {
+  display: none;
+}
+.labels-hidden .trail-marker:not(.is-active):not(:hover),
+.trail-marker.is-compact {
+  padding: 0.3rem;
+}
+
+.maplibregl-popup-content {
+  border-radius: 1rem;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-lift);
+  font-family: var(--font-sans);
+}
+.maplibregl-popup-close-button {
+  font-size: 1.1rem;
+  padding: 0 0.4rem;
+  color: white;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.5);
+}
+.maplibregl-ctrl-group {
+  border-radius: 0.75rem !important;
+  overflow: hidden;
 }
