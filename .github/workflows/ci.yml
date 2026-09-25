@@ -1,0 +1,28 @@
+name: CI
+
+# Vercel builds and deploys every push; this catches lint and type errors on PRs too.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: |
+          npx next typegen
+          npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
