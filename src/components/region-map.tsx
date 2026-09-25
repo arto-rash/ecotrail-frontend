@@ -12,22 +12,23 @@ type Shape = { name: { az: string; en: string }; path: string; label: [number, n
 
 export const REGION_SHAPES = regionShapes.regions as unknown as Record<string, Shape>;
 
-// Soft fills from the palette, assigned so that neighbours differ.
+// The palette (moss, ochre, pomegranate, plum, sand), a few steps deeper so regions stand out
+// against the sand background. Same colours as the mobile app. Neighbours differ.
 const FILLS: Record<string, string> = {
-  nakhchivan: "#e5eddc",
-  "gazakh-tovuz": "#f6ead0",
-  "ganja-dashkasan": "#f7e1d8",
-  "shaki-zagatala": "#e7e1ec",
-  "guba-khachmaz": "#f6ead0",
-  "central-aran": "#e5eddc",
-  "mountainous-shirvan": "#f0e9da",
-  "absheron-khizi": "#f7e1d8",
-  baku: "#e5eddc",
-  karabakh: "#e7e1ec",
-  "east-zangezur": "#e5eddc",
-  "mil-mughan": "#f6ead0",
-  "shirvan-salyan": "#e7e1ec",
-  "lankaran-astara": "#f0e9da",
+  nakhchivan: "#b3d197",
+  "gazakh-tovuz": "#e8c567",
+  "ganja-dashkasan": "#eba48b",
+  "shaki-zagatala": "#bca7d3",
+  "guba-khachmaz": "#e8c567",
+  "central-aran": "#b3d197",
+  "mountainous-shirvan": "#d1b47c",
+  "absheron-khizi": "#eba48b",
+  baku: "#b3d197",
+  karabakh: "#bca7d3",
+  "east-zangezur": "#b3d197",
+  "mil-mughan": "#e8c567",
+  "shirvan-salyan": "#bca7d3",
+  "lankaran-astara": "#d1b47c",
 };
 
 export function RegionMap({
@@ -55,7 +56,7 @@ export function RegionMap({
         <defs>
           <pattern id="no-hiking" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <rect width="8" height="8" fill="#ebe2d0" />
-            <line x1="0" y1="0" x2="0" y2="8" stroke="#c4b393" strokeWidth="3" />
+            <line x1="0" y1="0" x2="0" y2="8" stroke="#8f7a55" strokeWidth="3" />
           </pattern>
         </defs>
         {Object.entries(REGION_SHAPES).map(([slug, shape]) => {
@@ -72,8 +73,9 @@ export function RegionMap({
               aria-pressed={isActive}
               aria-label={shape.name[locale]}
               fill={isActive ? "#285237" : advised ? FILLS[slug] : "url(#no-hiking)"}
-              stroke="#fbf8f2"
-              strokeWidth={isActive || isHover ? 2.5 : 1.5}
+              stroke="#ffffff"
+              strokeWidth={isActive || isHover ? 3 : 2}
+              strokeLinejoin="round"
               className={cn(
                 "cursor-pointer transition-[filter,fill] duration-150 outline-none focus-visible:brightness-90",
                 !isActive && "hover:brightness-[0.93]",
