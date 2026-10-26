@@ -21,13 +21,13 @@ export function TourCard({ tour }: { tour: GuideTour }) {
     <article className="rounded-[var(--radius-card)] bg-white p-5 ring-1 ring-sand-200 sm:p-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h3 className="font-display-tight text-xl font-semibold text-forest-900">{tour.title}</h3>
+          <h3 className="font-display-tight text-xl font-extrabold text-forest-900">{tour.title}</h3>
           {tour.summary && <p className="mt-1 text-sm text-ink-700">{tour.summary}</p>}
         </div>
         <p className="shrink-0 text-right">
           {tour.price_azn !== null ? (
             <>
-              <span className="font-display-tight text-2xl font-semibold text-ink-900">{tour.price_azn} ₼</span>
+              <span className="font-display-tight text-2xl font-extrabold text-ink-900">{tour.price_azn} ₼</span>
               <span className="block text-xs text-ink-500">{tour.price_unit?.label}</span>
             </>
           ) : (

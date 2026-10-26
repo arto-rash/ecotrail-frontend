@@ -39,10 +39,10 @@ export default async function Home() {
           <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold tracking-[0.18em] text-sand-50 uppercase backdrop-blur">
             <Leaf className="size-3.5" /> {h.eyebrow}
           </p>
-          <h1 className="font-display-tight max-w-4xl text-5xl leading-[0.95] font-semibold text-sand-50 sm:text-7xl lg:text-8xl">
+          <h1 className="font-display-tight max-w-4xl text-5xl leading-[0.95] font-extrabold text-sand-50 sm:text-7xl lg:text-8xl">
             {h.titleLine1}
             <br />
-            <span className="font-normal text-moss-200 italic">{h.titleEm}</span> {h.titleLine2}
+            <span className="text-moss-200">{h.titleEm}</span> {h.titleLine2}
           </h1>
           <p className="mt-6 max-w-xl text-lg text-sand-100/90">{h.subtitle}</p>
           <div className="mt-8">
@@ -58,7 +58,7 @@ export default async function Home() {
               ].map(([v, l]) => (
                 <div key={String(l)}>
                   <dt className="sr-only">{l}</dt>
-                  <dd className="font-display-tight text-3xl font-semibold">{v}</dd>
+                  <dd className="font-display-tight text-3xl font-extrabold">{v}</dd>
                   <dd className="text-xs font-semibold tracking-wide text-sand-200/80 uppercase">{l}</dd>
                 </div>
               ))}
@@ -123,7 +123,7 @@ export default async function Home() {
               <Topo className="pointer-events-none absolute -bottom-40 -left-40 w-[40rem] text-forest-800" />
               <div className="relative">
                 <p className="mb-2 text-xs font-bold tracking-[0.2em] text-moss-200 uppercase">{h.mapEyebrow}</p>
-                <h2 className="font-display-tight text-4xl font-semibold">{h.mapTitle}</h2>
+                <h2 className="font-display-tight text-4xl font-extrabold">{h.mapTitle}</h2>
                 <p className="mt-4 max-w-md text-sand-200/90">{h.mapDescription}</p>
                 <Link href={p("/map")} className="mt-8 inline-flex items-center gap-2 rounded-full bg-sand-50 px-5 py-3 text-sm font-bold text-forest-900 transition hover:bg-moss-100">
                   {h.openMap} <ArrowRight className="size-4" />
@@ -146,7 +146,7 @@ export default async function Home() {
               return (
                 <div key={title} className="rounded-[var(--radius-card)] bg-sand-50/80 p-6 ring-1 ring-moss-200 backdrop-blur">
                   <span className="grid size-11 place-items-center rounded-full bg-forest-800 text-sand-50"><Icon className="size-5" /></span>
-                  <h3 className="font-display-tight mt-4 text-xl font-semibold text-forest-900">{title}</h3>
+                  <h3 className="font-display-tight mt-4 text-xl font-extrabold text-forest-900">{title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-ink-700">{text}</p>
                 </div>
               );
@@ -161,7 +161,7 @@ export default async function Home() {
           <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-moss-100 text-forest-800"><Users className="size-7" /></span>
           <div className="flex-1">
             <p className="text-xs font-bold tracking-[0.2em] text-pomegranate-600 uppercase">{h.guidesEyebrow}</p>
-            <h2 className="font-display-tight mt-1 text-2xl font-semibold text-forest-900 sm:text-3xl">{h.guidesTitle}</h2>
+            <h2 className="font-display-tight mt-1 text-2xl font-extrabold text-forest-900 sm:text-3xl">{h.guidesTitle}</h2>
             <p className="mt-2 max-w-2xl text-ink-700">{h.guidesDescription}</p>
           </div>
           <Link href={p("/guides#apply")} className="inline-flex shrink-0 items-center gap-2 rounded-full bg-forest-800 px-5 py-3 text-sm font-bold text-sand-50 hover:bg-forest-900">
@@ -175,7 +175,7 @@ export default async function Home() {
         <div className="relative isolate overflow-hidden rounded-[2rem] px-8 py-16 text-center sm:px-16">
           <Image src="/images/trails/lerik.jpg" alt="" fill sizes="100vw" className="-z-10 object-cover" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-br from-forest-950/90 via-forest-900/75 to-forest-800/40" />
-          <h2 className="font-display-tight mx-auto max-w-2xl text-4xl font-semibold text-sand-50 sm:text-5xl">{h.ctaTitle}</h2>
+          <h2 className="font-display-tight mx-auto max-w-2xl text-4xl font-extrabold text-sand-50 sm:text-5xl">{h.ctaTitle}</h2>
           <p className="mx-auto mt-4 max-w-lg text-sand-100/90">{h.ctaText}</p>
           <Link href={p("/trails/new")} className="mt-8 inline-flex items-center gap-2 rounded-full bg-pomegranate-600 px-6 py-3.5 font-bold text-white transition hover:bg-pomegranate-500">
             {h.ctaButton} <ArrowRight className="size-4" />

@@ -57,7 +57,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
               {guide.is_sample && <span className="rounded-full bg-ochre-100 px-2 py-0.5 text-xs font-bold text-[#7a5410]">{g.sample}</span>}
               {guide.is_verified && <span className="inline-flex items-center gap-1 rounded-full bg-moss-100 px-2 py-0.5 text-xs font-bold text-forest-700"><BadgeCheck className="size-3.5" /> {g.verified}</span>}
             </div>
-            <h1 className="font-display-tight mt-1 text-4xl font-semibold text-forest-900 sm:text-5xl">{guide.name}</h1>
+            <h1 className="font-display-tight mt-1 text-4xl font-extrabold text-forest-900 sm:text-5xl">{guide.name}</h1>
             {guide.headline && <p className="mt-1 text-lg font-semibold text-forest-800">{guide.headline}</p>}
             <Rating value={guide.rating} count={guide.reviews_count} className="mt-1 text-ink-700" />
           </div>
@@ -69,7 +69,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
         <div className="space-y-12">
           {guide.bio && (
             <section>
-              <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{g.about}</h2>
+              <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{g.about}</h2>
               <div className="mt-3 space-y-4 leading-relaxed text-ink-700">
                 {guide.bio.split(/\n{2,}/).map((p, i) => <p key={i}>{p}</p>)}
               </div>
@@ -80,7 +80,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
             <section className="grid gap-8 sm:grid-cols-2">
               {guide.specialties.length > 0 && (
                 <div>
-                  <h2 className="font-display-tight text-xl font-semibold text-forest-900">{g.specialties}</h2>
+                  <h2 className="font-display-tight text-xl font-extrabold text-forest-900">{g.specialties}</h2>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {guide.specialties.map((s) => <span key={s.value} className="rounded-full bg-moss-100 px-3 py-1.5 text-sm font-bold text-forest-800">{s.label}</span>)}
                   </div>
@@ -88,7 +88,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
               )}
               {guide.certifications.length > 0 && (
                 <div>
-                  <h2 className="font-display-tight text-xl font-semibold text-forest-900">{g.certifications}</h2>
+                  <h2 className="font-display-tight text-xl font-extrabold text-forest-900">{g.certifications}</h2>
                   <ul className="mt-3 space-y-2">
                     {guide.certifications.map((c) => (
                       <li key={c.name} className="flex items-start gap-2 text-sm">
@@ -103,7 +103,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
           )}
 
           <section>
-            <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{g.tours}</h2>
+            <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{g.tours}</h2>
             {guide.tours.length > 0 ? (
               <div className="mt-4 space-y-4">{guide.tours.map((t) => <TourCard key={t.slug} tour={t} />)}</div>
             ) : (

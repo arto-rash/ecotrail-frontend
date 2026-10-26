@@ -55,7 +55,7 @@ export function MapExplorer({ data, regions, initialRegion }: { data: MapData; r
       <aside className="order-2 flex flex-col border-sand-200 bg-sand-50 lg:order-1 lg:w-[23rem] lg:shrink-0 lg:border-r">
         <div className="space-y-4 border-b border-sand-200 p-4">
           <div className="flex items-center justify-between gap-3">
-            <h1 className="font-display-tight text-3xl font-semibold text-forest-900">{m.title}</h1>
+            <h1 className="font-display-tight text-3xl font-extrabold text-forest-900">{m.title}</h1>
             <div className="inline-flex rounded-full bg-sand-200/70 p-1 text-sm font-bold" role="tablist">
               {(["regions", "terrain"] as const).map((v) => (
                 <button key={v} role="tab" aria-selected={mode === v} onClick={() => setMode(v)} className={cn("rounded-full px-3.5 py-1.5 transition", mode === v ? "bg-white text-forest-900 shadow-sm" : "text-ink-500")}>

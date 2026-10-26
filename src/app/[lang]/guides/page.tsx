@@ -26,7 +26,7 @@ export default async function GuidesPage({ searchParams }: PageProps<"/[lang]/gu
   return (
     <div className="container-page pt-10">
       <p className="text-xs font-bold tracking-[0.2em] text-pomegranate-600 uppercase">{g.eyebrow}</p>
-      <h1 className="font-display-tight mt-2 text-4xl font-semibold text-forest-900 sm:text-5xl">{g.title}</h1>
+      <h1 className="font-display-tight mt-2 text-4xl font-extrabold text-forest-900 sm:text-5xl">{g.title}</h1>
       <p className="mt-3 max-w-2xl text-ink-700">{g.intro}</p>
 
       <div className="mt-8">
@@ -51,7 +51,7 @@ export default async function GuidesPage({ searchParams }: PageProps<"/[lang]/gu
 
       <section id="apply" className="mt-14 grid scroll-mt-24 gap-8 rounded-[2rem] bg-white p-6 shadow-[var(--shadow-card)] ring-1 ring-sand-200 sm:p-10 lg:grid-cols-[1fr_1.6fr]">
         <div>
-          <h2 className="font-display-tight text-3xl font-semibold text-forest-900">{g.applyTitle}</h2>
+          <h2 className="font-display-tight text-3xl font-extrabold text-forest-900">{g.applyTitle}</h2>
           <p className="mt-3 text-ink-700">{g.applyIntro}</p>
         </div>
         {options && <GuideApplicationForm regions={regions ?? []} options={options} />}

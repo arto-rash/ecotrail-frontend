@@ -32,7 +32,7 @@ export function TrailCard({ trail, priority, sizes = "(min-width: 1024px) 33vw, 
         </div>
         <div className="absolute inset-x-0 bottom-0 p-4 text-sand-50">
           <LocationLink label={trailPlace(trail)} lat={trail.location.lat} lng={trail.location.lng} nested className="mb-1 max-w-full text-xs font-semibold text-sand-200/90" />
-          <h3 className="font-display-tight text-2xl leading-tight font-semibold">{trail.name}</h3>
+          <h3 className="font-display-tight text-2xl leading-tight font-extrabold">{trail.name}</h3>
           <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-sand-100">
             <span className="inline-flex items-center gap-1"><Route className="size-3.5" />{formatDistance(trail.distance_km, locale, dict)}</span>
             <span className="inline-flex items-center gap-1" title={trail.stats_estimated ? dict.common.estimatedTooltip : undefined}>

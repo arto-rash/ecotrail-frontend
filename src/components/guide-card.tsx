@@ -25,7 +25,7 @@ export function GuideCard({ guide }: { guide: Guide }) {
         <GuideAvatar name={guide.name} photo={guide.photo} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="font-display-tight text-2xl font-semibold text-ink-900 group-hover:text-forest-800">{guide.name}</h2>
+            <h2 className="font-display-tight text-2xl font-extrabold text-ink-900 group-hover:text-forest-800">{guide.name}</h2>
             {guide.is_sample && <span className="rounded-full bg-ochre-100 px-2 py-0.5 text-xs font-bold text-[#7a5410]">{g.sample}</span>}
             {guide.is_verified && (
               <span className="inline-flex items-center gap-1 rounded-full bg-moss-100 px-2 py-0.5 text-xs font-bold text-forest-700"><BadgeCheck className="size-3.5" /> {g.verified}</span>

@@ -2,8 +2,8 @@
 @import "maplibre-gl/dist/maplibre-gl.css";
 
 @theme {
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-geologica), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geologica), ui-sans-serif, system-ui, sans-serif;
 
   --color-forest-950: #0e2217;
   --color-forest-900: #14301f;
@@ -73,8 +73,9 @@ body {
 
 @utility font-display-tight {
   font-family: var(--font-display);
-  font-variation-settings: "SOFT" 50, "WONK" 0;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  font-variation-settings: "SHRP" 100;
+  letter-spacing: -0.03em;
 }
 
 @utility no-scrollbar {

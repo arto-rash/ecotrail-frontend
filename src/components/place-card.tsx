@@ -23,7 +23,7 @@ export function PlaceCard({ place, priority, sizes = "(min-width: 1024px) 25vw, 
           {dict.placeType[place.type]}
         </span>
         <div className="absolute inset-x-0 bottom-0 p-4 text-sand-50">
-          <h3 className="font-display-tight text-xl leading-tight font-semibold">{place.name}</h3>
+          <h3 className="font-display-tight text-xl leading-tight font-extrabold">{place.name}</h3>
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-sand-200/90">
             <LocationLink label={where} lat={place.location.lat} lng={place.location.lng} nested className="max-w-full" />
             {place.ele_m !== null && (

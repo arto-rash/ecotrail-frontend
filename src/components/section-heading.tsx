@@ -18,7 +18,7 @@ export function SectionHeading({
     <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="max-w-2xl">
         {eyebrow && <p className="mb-2 text-xs font-bold tracking-[0.2em] text-pomegranate-600 uppercase">{eyebrow}</p>}
-        <h2 className="font-display-tight text-3xl font-semibold text-forest-900 sm:text-4xl">{title}</h2>
+        <h2 className="font-display-tight text-3xl font-extrabold text-forest-900 sm:text-4xl">{title}</h2>
         {description && <p className="mt-3 text-ink-700">{description}</p>}
       </div>
       {href && cta && (

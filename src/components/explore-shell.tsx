@@ -17,7 +17,7 @@ export function ExploreShell({
     <div className="container-page pt-8 lg:pt-10">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-display-tight text-4xl font-semibold text-forest-900 sm:text-5xl">{title}</h1>
+          <h1 className="font-display-tight text-4xl font-extrabold text-forest-900 sm:text-5xl">{title}</h1>
           <p className="mt-2 text-ink-700">{intro}</p>
         </div>
         <nav className="inline-flex self-start rounded-full bg-sand-200/70 p-1 sm:self-auto" aria-label={title}>

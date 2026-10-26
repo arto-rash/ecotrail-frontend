@@ -5,7 +5,7 @@ export function SourcesList({ title, sources }: { title: string; sources: Source
   if (!sources.length) return null;
   return (
     <section>
-      <h2 className="font-display-tight text-xl font-semibold text-forest-900">{title}</h2>
+      <h2 className="font-display-tight text-xl font-extrabold text-forest-900">{title}</h2>
       <ul className="mt-3 space-y-1.5 text-sm">
         {sources.map((s) => (
           <li key={s.url + s.label} className="flex flex-wrap items-baseline gap-x-2">

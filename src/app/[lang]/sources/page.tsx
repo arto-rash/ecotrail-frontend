@@ -15,10 +15,10 @@ export default async function SourcesPage() {
 
   return (
     <div className="container-page max-w-4xl pt-10">
-      <h1 className="font-display-tight text-4xl font-semibold text-forest-900 sm:text-5xl">{s.title}</h1>
+      <h1 className="font-display-tight text-4xl font-extrabold text-forest-900 sm:text-5xl">{s.title}</h1>
       <p className="mt-3 text-ink-700">{s.intro}</p>
 
-      <h2 className="font-display-tight mt-10 text-2xl font-semibold text-forest-900">{s.dataTitle}</h2>
+      <h2 className="font-display-tight mt-10 text-2xl font-extrabold text-forest-900">{s.dataTitle}</h2>
       <ul className="mt-4 divide-y divide-sand-200 rounded-[var(--radius-card)] bg-white ring-1 ring-sand-200">
         {s.data.map((d) => (
           <li key={d.name} className="flex flex-col gap-1 p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -31,12 +31,12 @@ export default async function SourcesPage() {
         ))}
       </ul>
 
-      <h2 className="font-display-tight mt-10 text-2xl font-semibold text-forest-900">{s.methodTitle}</h2>
+      <h2 className="font-display-tight mt-10 text-2xl font-extrabold text-forest-900">{s.methodTitle}</h2>
       <ul className="mt-4 list-disc space-y-2 pl-5 text-ink-700">
         {s.method.map((m) => <li key={m}>{m}</li>)}
       </ul>
 
-      <h2 className="font-display-tight mt-10 text-2xl font-semibold text-forest-900">{s.photosTitle}</h2>
+      <h2 className="font-display-tight mt-10 text-2xl font-extrabold text-forest-900">{s.photosTitle}</h2>
       <p className="mt-2 text-ink-700">{s.photosIntro}</p>
       <ul className="mt-4 divide-y divide-sand-200 rounded-[var(--radius-card)] bg-white ring-1 ring-sand-200">
         {Object.entries(credits).map(([slug, c]) => (

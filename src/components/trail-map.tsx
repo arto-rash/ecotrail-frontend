@@ -160,7 +160,7 @@ export function TrailMap({ data, show = { trails: true, places: true }, activeSl
               <a href="${escapeHtml(href)}" style="display:block;color:inherit;text-decoration:none">
                 ${p.image ? `<img src="${escapeHtml(p.image)}" alt="" style="width:100%;height:120px;object-fit:cover;display:block" />` : ""}
                 <div style="padding:10px 12px 4px">
-                  <div style="font-family:var(--font-display);font-size:17px;font-weight:600;line-height:1.2">${escapeHtml(p.name)}</div>
+                  <div style="font-family:var(--font-display);font-size:17px;font-weight:800;letter-spacing:-0.03em;font-variation-settings:'SHRP' 100;line-height:1.2">${escapeHtml(p.name)}</div>
                   <div style="margin-top:4px;font-size:12px;color:#676e63;font-weight:600">${meta.filter(Boolean).map((s) => escapeHtml(String(s))).join(" · ")}</div>
                 </div>
               </a>

@@ -122,7 +122,7 @@ export function RegionMap({
       <div className="pointer-events-none absolute right-0 bottom-0 min-h-14 max-w-[70%] rounded-2xl bg-white/95 px-4 py-2.5 text-sm shadow-[var(--shadow-card)] ring-1 ring-sand-200">
         {focused ? (
           <>
-            <p className="font-display-tight text-base font-semibold text-forest-900">{focused.name}</p>
+            <p className="font-display-tight text-base font-extrabold text-forest-900">{focused.name}</p>
             {focused.hiking_advised ? (
               <p className="text-xs font-semibold text-ink-500">
                 {fill(dict.regionMap.trails, { count: focused.trails_count ?? 0 })} · {fill(dict.regionMap.places, { count: focused.places_count ?? 0 })}

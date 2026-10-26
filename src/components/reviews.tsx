@@ -57,7 +57,7 @@ export function Reviews({
   return (
     <section>
       <div className="flex items-end justify-between gap-3">
-        <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{r.title}</h2>
+        <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{r.title}</h2>
         <Rating value={avg} count={reviews.length} className="text-ink-700" />
       </div>
 

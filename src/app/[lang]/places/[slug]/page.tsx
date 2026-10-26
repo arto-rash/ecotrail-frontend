@@ -76,7 +76,7 @@ export default async function PlacePage({ params }: PageProps<"/[lang]/places/[s
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <span className="rounded-full bg-moss-100 px-2.5 py-1 text-xs font-bold text-forest-800">{typeLabel}</span>
-            <h1 className="font-display-tight mt-3 text-4xl font-semibold text-forest-900 sm:text-6xl">{place.name}</h1>
+            <h1 className="font-display-tight mt-3 text-4xl font-extrabold text-forest-900 sm:text-6xl">{place.name}</h1>
             {place.summary && <p className="mt-1 text-ink-500">{place.summary}</p>}
             <LocationLink label={where} lat={lat} lng={lng} className="mt-2 font-semibold text-ink-500 hover:text-forest-800" />
           </div>
@@ -110,7 +110,7 @@ export default async function PlacePage({ params }: PageProps<"/[lang]/places/[s
       <div className="container-page mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="space-y-12">
           <section>
-            <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{pl.about}</h2>
+            <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{pl.about}</h2>
             {place.description ? (
               <>
                 <p className="mt-3 leading-relaxed text-ink-700">{place.description}</p>
@@ -127,7 +127,7 @@ export default async function PlacePage({ params }: PageProps<"/[lang]/places/[s
 
           {place.trails.length > 0 && (
             <section>
-              <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{pl.trailsHere}</h2>
+              <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{pl.trailsHere}</h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 {place.trails.map((t) => <TrailCard key={t.slug} trail={t} sizes="(min-width:640px) 33vw, 85vw" />)}
               </div>
@@ -156,7 +156,7 @@ export default async function PlacePage({ params }: PageProps<"/[lang]/places/[s
 
       {nearby && nearby.length > 0 && (
         <section className="container-page mt-20">
-          <h2 className="font-display-tight mb-6 text-3xl font-semibold text-forest-900">{pl.nearby}</h2>
+          <h2 className="font-display-tight mb-6 text-3xl font-extrabold text-forest-900">{pl.nearby}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {nearby.map((n) => <PlaceCard key={n.slug} place={n} />)}
           </div>

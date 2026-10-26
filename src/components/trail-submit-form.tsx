@@ -152,7 +152,7 @@ export function TrailSubmitForm({ options }: { options: Options }) {
         <span className="mx-auto grid size-16 place-items-center rounded-full bg-forest-800 text-sand-50">
           <PartyPopper className="size-7" />
         </span>
-        <h2 className="font-display-tight mt-6 text-4xl font-semibold text-forest-900">{t.doneTitle}</h2>
+        <h2 className="font-display-tight mt-6 text-4xl font-extrabold text-forest-900">{t.doneTitle}</h2>
         <p className="mx-auto mt-4 max-w-md text-ink-700">{fill(t.doneText, { name: form.name, email: form.submitter_email })}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href={localePath(locale, "/trails")} className="rounded-full bg-forest-800 px-5 py-3 text-sm font-bold text-sand-50 hover:bg-forest-900">{t.exploreTrails}</Link>

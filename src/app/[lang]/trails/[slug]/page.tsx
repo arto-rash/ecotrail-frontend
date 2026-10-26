@@ -103,7 +103,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
               {trail.duration_minutes > 600 && <span className="rounded-full bg-forest-900 px-2.5 py-1 text-xs font-bold text-sand-50">{t.multiDay}</span>}
               {trail.network === "tct" && <span className="rounded-full bg-sand-200 px-2.5 py-1 text-xs font-bold text-ink-700">{t.partOfTct}</span>}
             </div>
-            <h1 className="font-display-tight mt-3 text-4xl font-semibold text-forest-900 sm:text-6xl">{trail.name}</h1>
+            <h1 className="font-display-tight mt-3 text-4xl font-extrabold text-forest-900 sm:text-6xl">{trail.name}</h1>
             <LocationLink label={place} lat={lat} lng={lng} className="mt-2 font-semibold text-ink-500 hover:text-forest-800" />
           </div>
           <ShareButton title={trail.name} />
@@ -124,7 +124,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
               <Icon className="size-5 shrink-0 text-forest-600" />
               <div>
                 <dt className="text-[0.65rem] font-bold tracking-[0.14em] text-ink-500 uppercase">{label}</dt>
-                <dd className="font-display-tight text-xl font-semibold text-ink-900">{value}</dd>
+                <dd className="font-display-tight text-xl font-extrabold text-ink-900">{value}</dd>
                 {note && <dd className="text-xs text-ink-500">{note}</dd>}
               </div>
             </div>
@@ -135,7 +135,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
       <div className="container-page mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="space-y-12">
           <section>
-            <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{t.overview}</h2>
+            <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{t.overview}</h2>
             <p className="mt-3 text-lg font-medium text-ink-900">{trail.summary ?? fallbackSummary}</p>
             {trail.description && (
               <div className="mt-4 space-y-4 leading-relaxed text-ink-700">
@@ -158,7 +158,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
 
           {trail.elevation_profile.length > 1 && (
             <section>
-              <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{t.profile}</h2>
+              <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{t.profile}</h2>
               <div className="mt-4 rounded-[var(--radius-card)] bg-white p-3 ring-1 ring-sand-200 sm:p-4">
                 <ElevationProfile profile={trail.elevation_profile} />
               </div>
@@ -168,7 +168,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
 
           {trail.places.length > 0 && (
             <section>
-              <h2 className="font-display-tight text-2xl font-semibold text-forest-900">{t.onTheWay}</h2>
+              <h2 className="font-display-tight text-2xl font-extrabold text-forest-900">{t.onTheWay}</h2>
               <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                 {trail.places.map((p) => (
                   <li key={p.slug}>
@@ -226,7 +226,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
           </div>
 
           <div className="rounded-[var(--radius-card)] bg-forest-900 p-5 text-sand-100">
-            <p className="font-display-tight text-lg font-semibold text-sand-50">{dict.difficultyBlurb[trail.difficulty]}</p>
+            <p className="font-display-tight text-lg font-extrabold text-sand-50">{dict.difficultyBlurb[trail.difficulty]}</p>
             <p className="mt-2 text-sm text-sand-200/85">{t.safety}</p>
             {trailGuides.length === 0 && (
               <Link href={localePath(locale, `/guides${trail.region ? `?region=${trail.region.slug}` : ""}`)} className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-moss-200 hover:text-white">
@@ -237,7 +237,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
 
           {trailGuides.length > 0 && (
             <div className="rounded-[var(--radius-card)] bg-white p-5 ring-1 ring-sand-200">
-              <p className="font-display-tight text-lg font-semibold text-forest-900">{dict.guides.onTrail}</p>
+              <p className="font-display-tight text-lg font-extrabold text-forest-900">{dict.guides.onTrail}</p>
               <p className="text-sm text-ink-500">{dict.guides.onTrailHint}</p>
               <ul className="mt-3 space-y-2">
                 {trailGuides.map((guide) => (
@@ -262,7 +262,7 @@ export default async function TrailPage({ params }: PageProps<"/[lang]/trails/[s
 
       {nearby && nearby.length > 0 && (
         <section className="container-page mt-20">
-          <h2 className="font-display-tight mb-6 text-3xl font-semibold text-forest-900">{t.nearby}</h2>
+          <h2 className="font-display-tight mb-6 text-3xl font-extrabold text-forest-900">{t.nearby}</h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {nearby.map((n) => <TrailCard key={n.slug} trail={n} />)}
           </div>

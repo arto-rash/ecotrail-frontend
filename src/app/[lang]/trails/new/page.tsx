@@ -15,7 +15,7 @@ export default async function NewTrailPage() {
   return (
     <div className="container-page max-w-3xl pt-10">
       <p className="text-xs font-bold tracking-[0.2em] text-pomegranate-600 uppercase">{s.eyebrow}</p>
-      <h1 className="font-display-tight mt-2 text-4xl font-semibold text-forest-900 sm:text-5xl">{s.title}</h1>
+      <h1 className="font-display-tight mt-2 text-4xl font-extrabold text-forest-900 sm:text-5xl">{s.title}</h1>
       <p className="mt-3 text-ink-700">{s.intro}</p>
       {options ? (
         <TrailSubmitForm options={options} />
